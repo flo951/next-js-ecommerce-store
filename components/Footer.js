@@ -1,13 +1,11 @@
 import Link from 'next/link';
 import { css } from '@emotion/react';
 
-const headerStyles = css`
+const footerStyles = css`
   padding: 20px 20px;
   margin: 1rem 1rem;
   border-radius: 5px;
   background-color: #526333;
-  display: flex;
-  justify-content: center;
   a {
     color: white;
     text-decoration: none;
@@ -16,14 +14,14 @@ const headerStyles = css`
   }
 `;
 
-export default function Header() {
+export default function Footer() {
   return (
-    <header css={headerStyles}>
+    <header css={footerStyles}>
       <Link href="/">
-        <a>Products</a>
+        <a>About</a>
       </Link>
       <Link href="/about">
-        <a>Cart</a>
+        <a>Contact</a>
       </Link>
     </header>
   );
