@@ -8,7 +8,7 @@ export default function Layout(props) {
       <Head>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
+      <Header amount={props.amount} />
       <main>{props.children}</main>
       <Footer />
     </>
