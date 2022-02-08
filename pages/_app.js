@@ -14,9 +14,6 @@ function MyApp({ Component, pageProps }) {
               sans-serif;
             background-color: black;
           }
-          main {
-            margin: 0 8px;
-          }
         `}
       />
       {/* component for each of the pages */}

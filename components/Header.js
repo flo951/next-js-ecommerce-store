@@ -4,7 +4,7 @@ import { css } from '@emotion/react';
 const headerStyles = css`
   padding: 20px 20px;
   margin: 1rem 1rem;
-  border-radius: 5px;
+  border-radius: 8px;
   background-color: #01397a;
   display: flex;
   justify-content: space-between;

@@ -3,8 +3,8 @@ import { css } from '@emotion/react';
 
 const footerStyles = css`
   padding: 20px 20px;
-  margin: 3rem 1rem 1rem 1rem;
-  border-radius: 5px;
+  margin: 1rem 1rem 1rem 1rem;
+  border-radius: 8px;
   background-color: #01397a;
   a {
     color: white;

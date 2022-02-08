@@ -9,6 +9,7 @@ const containerStyles = css`
   display: flex;
   flex-wrap: wrap;
   gap: 3rem;
+  margin-bottom: 2rem;
   justify-content: center;
   a {
     text-decoration: none;
