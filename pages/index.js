@@ -4,6 +4,8 @@ import Layout from '../components/Layout';
 import { css } from '@emotion/react';
 import pokemonDatabase from '../util/database';
 import Link from 'next/link';
+import Cookies from 'js-cookie';
+import { useState } from 'react';
 
 const containerStyles = css`
   display: flex;
@@ -54,6 +56,31 @@ const layoutStyles = css`
   margin: 1rem 1rem;
 `;
 export default function Home(props) {
+  const [likedArray, setLikedArray] = useState(props.likedPokemons);
+
+  function handleAddToCookie(id) {
+    // 1. get the value of the cookie
+
+    const cookieValue = JSON.parse(Cookies.get('likedPokemons') || '[]');
+    console.log('current value', cookieValue);
+    // 2. update the cookie
+    const existOnArray = cookieValue.some((cookieObject) => {
+      return cookieObject.id === id;
+    });
+    let newCookie;
+    if (existOnArray) {
+      newCookie = cookieValue.filter((cookieObject) => {
+        return cookieObject.id !== id;
+      });
+    } else {
+      newCookie = [...cookieValue, { id: id, stars: 0 }];
+    }
+
+    // 3. set the new value of the cookie
+    setLikedArray(newCookie);
+    Cookies.set('likedPokemons', JSON.stringify(newCookie));
+  }
+
   return (
     <Layout css={layoutStyles}>
       <Head>
@@ -66,25 +93,34 @@ export default function Home(props) {
       </div>
       <div css={containerStyles}>
         {props.pokemonDatabase.map((product) => {
+          const pokemonIsLiked = likedArray.some((likedObject) => {
+            return likedObject.id === product.id;
+          });
+
           return (
-            <Link
-              href={`/products/${product.id}`}
-              key={'pokemon-' + product.id}
-            >
-              <a>
-                <div css={pokemonCardStyles}>
-                  <h2>{product.name}</h2>
-                  <h4>{product.type}</h4>
-                  <Image
-                    css={imageStyles}
-                    src={`/pokemon-images/${product.id}.jpeg`}
-                    height="200%"
-                    width="200%"
-                    alt={product.name}
-                  />
-                </div>
-              </a>
-            </Link>
+            <div key={product.id}>
+              <Link
+                href={`/products/${product.id}`}
+                key={'pokemon-' + product.id}
+              >
+                <a>
+                  <div css={pokemonCardStyles}>
+                    <h2>{product.name}</h2>
+                    <h4>{product.type}</h4>
+                    <Image
+                      css={imageStyles}
+                      src={`/pokemon-images/${product.id}.jpeg`}
+                      height="200%"
+                      width="200%"
+                      alt={product.name}
+                    />
+                  </div>
+                </a>
+              </Link>
+              <button onClick={() => handleAddToCookie(product.id)}>
+                {pokemonIsLiked ? '🧡' : '🖤'}
+              </button>
+            </div>
           );
         })}
       </div>
@@ -92,8 +128,21 @@ export default function Home(props) {
   );
 }
 // Code in getserversideprops runs only in node js -> terminal console, you can read files from file system, connect to database
-export function getServerSideProps() {
+export function getServerSideProps(context) {
+  // context allow to acces cookies
+  // important, always return an object from getserversideprops and always return a key (props is the key)
+
+  const likedPokemonsOnCookies = context.req.cookies.likedPokemons || '[]';
+
+  const likedPokemons = JSON.parse(likedPokemonsOnCookies);
+  // 1. get the cookies from the browser
+
+  // 2. pass the cookies to the frontend
+
   return {
-    props: { pokemonDatabase: pokemonDatabase },
+    props: {
+      likedPokemons: likedPokemons,
+      pokemonDatabase: pokemonDatabase,
+    },
   };
 }
