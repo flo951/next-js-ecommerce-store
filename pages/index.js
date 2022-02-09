@@ -56,30 +56,30 @@ const layoutStyles = css`
   margin: 1rem 1rem;
 `;
 export default function Home(props) {
-  const [likedArray, setLikedArray] = useState(props.likedPokemons);
+  // const [likedArray, setLikedArray] = useState(props.likedPokemons);
 
-  function handleAddToCookie(id) {
-    // 1. get the value of the cookie
+  // function handleAddToCookie(id) {
+  //   // 1. get the value of the cookie
 
-    const cookieValue = JSON.parse(Cookies.get('likedPokemons') || '[]');
-    console.log('current value', cookieValue);
-    // 2. update the cookie
-    const existOnArray = cookieValue.some((cookieObject) => {
-      return cookieObject.id === id;
-    });
-    let newCookie;
-    if (existOnArray) {
-      newCookie = cookieValue.filter((cookieObject) => {
-        return cookieObject.id !== id;
-      });
-    } else {
-      newCookie = [...cookieValue, { id: id, stars: 0 }];
-    }
+  //   const cookieValue = JSON.parse(Cookies.get('likedPokemons') || '[]');
+  //   console.log('current value', cookieValue);
+  //   // 2. update the cookie
+  //   const existOnArray = cookieValue.some((cookieObject) => {
+  //     return cookieObject.id === id;
+  //   });
+  //   let newCookie;
+  //   if (existOnArray) {
+  //     newCookie = cookieValue.filter((cookieObject) => {
+  //       return cookieObject.id !== id;
+  //     });
+  //   } else {
+  //     newCookie = [...cookieValue, { id: id }];
+  //   }
 
-    // 3. set the new value of the cookie
-    setLikedArray(newCookie);
-    Cookies.set('likedPokemons', JSON.stringify(newCookie));
-  }
+  //   // 3. set the new value of the cookie
+  //   setLikedArray(newCookie);
+  //   Cookies.set('likedPokemons', JSON.stringify(newCookie));
+  // }
 
   return (
     <Layout css={layoutStyles}>
@@ -93,9 +93,9 @@ export default function Home(props) {
       </div>
       <div css={containerStyles}>
         {props.pokemonDatabase.map((product) => {
-          const pokemonIsLiked = likedArray.some((likedObject) => {
-            return likedObject.id === product.id;
-          });
+          // const pokemonIsLiked = likedArray.some((likedObject) => {
+          //   return likedObject.id === product.id;
+          // });
 
           return (
             <div key={product.id}>
@@ -117,9 +117,9 @@ export default function Home(props) {
                   </div>
                 </a>
               </Link>
-              <button onClick={() => handleAddToCookie(product.id)}>
+              {/* <button onClick={() => handleAddToCookie(product.id)}>
                 {pokemonIsLiked ? '🧡' : '🖤'}
-              </button>
+              </button> */}
             </div>
           );
         })}
@@ -132,16 +132,16 @@ export function getServerSideProps(context) {
   // context allow to acces cookies
   // important, always return an object from getserversideprops and always return a key (props is the key)
 
-  const likedPokemonsOnCookies = context.req.cookies.likedPokemons || '[]';
+  // const likedPokemonsOnCookies = context.req.cookies.likedPokemons || '[]';
 
-  const likedPokemons = JSON.parse(likedPokemonsOnCookies);
-  // 1. get the cookies from the browser
+  // const likedPokemons = JSON.parse(likedPokemonsOnCookies);
+  // // 1. get the cookies from the browser
 
   // 2. pass the cookies to the frontend
 
   return {
     props: {
-      likedPokemons: likedPokemons,
+      // likedPokemons: likedPokemons,
       pokemonDatabase: pokemonDatabase,
     },
   };
