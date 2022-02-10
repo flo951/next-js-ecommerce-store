@@ -16,7 +16,7 @@ const centerCardStyles = css`
 const pokemonCardStyles = css`
   width: 300px;
 
-  background-color: #1668c7;
+  background-color: #01397a;
   color: white;
   border: 2px solid black;
   border-radius: 8px;
@@ -127,7 +127,12 @@ export default function SingleProduct(props) {
     } else {
       newCookie = [
         ...cookieValue,
-        { id: id, amount: amount, price: props.pokemon.price * amount },
+        {
+          id: id,
+          amount: amount,
+          price: props.pokemon.price * amount,
+          name: props.pokemon.name,
+        },
       ];
     }
 

@@ -7,7 +7,7 @@ const formContainerStyles = css`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #f3f3f3;
+  color: white;
   margin: 1rem 1rem;
   border-radius: 8px;
 `;
@@ -57,17 +57,20 @@ const nameInputStyles = css`
 `;
 const userNameInfoStyles = css``;
 const inputSubmitStyles = css`
-  margin-top: 1rem;
-  height: 10%;
-  padding: 8px 4px;
-  font-size: 16px;
+  margin-top: 48px;
+  padding: 16px 8px;
+  background-color: #01397a;
+  color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
+  font-size: 20px;
+  cursor: pointer;
+
   :hover {
-    box-shadow: rgba(240, 46, 170, 0.4) 5px 5px,
-      rgba(240, 46, 170, 0.3) 10px 10px, rgba(240, 46, 170, 0.2) 15px 15px,
-      rgba(240, 46, 170, 0.1) 20px 20px, rgba(240, 46, 170, 0.05) 25px 25px;
-    transition: 0.3s ease-out;
+    transition: ease-out 0.3s;
+    box-shadow: rgba(240, 46, 170, 0.4) 0px 5px,
+      rgba(240, 46, 170, 0.3) 0px 10px, rgba(240, 46, 170, 0.2) 0px 15px,
+      rgba(240, 46, 170, 0.1) 0px 20px, rgba(240, 46, 170, 0.05) 0px 25px;
   }
 `;
 export default function Checkout(props) {
@@ -163,14 +166,13 @@ export default function Checkout(props) {
                 placeholder="CVC"
               />
             </label>
+            <input
+              css={inputSubmitStyles}
+              data-test-id="checkout-confirm-order"
+              type="submit"
+              value="Loose your money"
+            />
           </div>
-
-          <input
-            css={inputSubmitStyles}
-            data-test-id="checkout-confirm-order"
-            type="submit"
-            value="Loose your money"
-          />
         </form>
       </div>
     </Layout>

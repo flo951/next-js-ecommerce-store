@@ -22,7 +22,7 @@ const containerStyles = css`
 const pokemonCardStyles = css`
   height: 350px;
   width: 250px;
-  background-color: #1668c7;
+  background-color: #01397a;
   color: white;
   border: 2px solid black;
   border-radius: 8px;

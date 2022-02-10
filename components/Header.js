@@ -21,8 +21,9 @@ const headerStyles = css`
       transition: 0.3s ease-out;
     }
   }
-  h2 {
+  span {
     color: white;
+    font-size: 28px;
   }
 `;
 
@@ -32,11 +33,13 @@ export default function Header(props) {
       <Link href="/">
         <a>Products</a>
       </Link>
-      <Link href="/cart">
-        <a>Cart</a>
-      </Link>
+      <div>
+        <Link href="/cart">
+          <a>Cart</a>
+        </Link>
 
-      <h2>{JSON.stringify(props.items)}</h2>
+        <span>{JSON.stringify(props.items)}</span>
+      </div>
     </header>
   );
 }
