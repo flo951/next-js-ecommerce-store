@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useState } from 'react';
 import Layout from '../../components/Layout';
-import pokemonDatabase from '../../util/database';
+import { getSinglePokemon } from '../../util/database';
 import Cookies from 'js-cookie';
 
 const centerCardStyles = css`
@@ -97,16 +97,7 @@ export default function SingleProduct(props) {
     setAmount(amount - 1);
   };
 
-  function handleAddToCart() {
-    if (amount === 1) {
-      setAddedToCart(`You added one card!`);
-    } else {
-      setAddedToCart(`You added ${amount} cards!`);
-    }
-  }
-
   function handleAddToCookie(id) {
-    // 1. get the value of the cookie
     if (amount === 1) {
       setAddedToCart(`You added one card!`);
     } else {
@@ -114,16 +105,37 @@ export default function SingleProduct(props) {
     }
 
     const cookieValue = JSON.parse(Cookies.get('likedPokemons') || '[]');
-    //console.log('current value', cookieValue);
-    // 2. update the cookie
+
     const existOnArray = cookieValue.some((cookieObject) => {
       return cookieObject.id === id;
     });
+
+    const pokemonInCart = cookieValue.find((cookieObject) => {
+      return cookieObject.id === id;
+    });
+
     let newCookie;
     if (existOnArray) {
-      newCookie = cookieValue.filter((cookieObject) => {
-        return cookieObject.id !== id;
-      });
+      const newAmount = amount + pokemonInCart.amount;
+
+      newCookie = [
+        ...cookieValue,
+        {
+          id: id,
+          amount: newAmount,
+          price: props.pokemon.price * newAmount,
+          name: props.pokemon.name,
+        },
+      ];
+      // filter products that are not to be updated, and filter out the old product that is updated
+      const cookieUpdated = newCookie.filter(
+        (cookieObject) =>
+          cookieObject.id !== id ||
+          (cookieObject.id === id) & (cookieObject.amount === newAmount),
+      );
+
+      setLikedArray(cookieUpdated);
+      Cookies.set('likedPokemons', JSON.stringify(cookieUpdated));
     } else {
       newCookie = [
         ...cookieValue,
@@ -134,11 +146,10 @@ export default function SingleProduct(props) {
           name: props.pokemon.name,
         },
       ];
+      // 3. set the new value of the cookie
+      setLikedArray(newCookie);
+      Cookies.set('likedPokemons', JSON.stringify(newCookie));
     }
-
-    // 3. set the new value of the cookie
-    setLikedArray(newCookie);
-    Cookies.set('likedPokemons', JSON.stringify(newCookie));
   }
   const pokemonIsLiked = likedArray.some((likedObject) => {
     return likedObject.id === props.pokemon.id;
@@ -168,7 +179,6 @@ export default function SingleProduct(props) {
           />
 
           <h3> {props.pokemon.price} €</h3>
-          <h3> {likedArray.length}</h3>
         </div>
         <p>{minAmount}</p>
         <div css={counterDivStyles}>
@@ -203,33 +213,37 @@ export default function SingleProduct(props) {
         </div>
 
         <button onClick={() => handleAddToCookie(props.pokemon.id)}>
-          {pokemonIsLiked ? '🧡' : '🖤'}
+          Delete from Cart
         </button>
+        {pokemonIsLiked
+          ? 'Already in your Cart'
+          : 'Buy now before its sold out!'}
       </div>
     </Layout>
   );
 }
 
-export function getServerSideProps(context) {
-  // this is the variable we get from url
-  const pokemonId = context.query.pokemonId;
-  console.log('database joooo', pokemonDatabase);
-  const matchingPokemon = pokemonDatabase.find((pokemon) => {
-    // eslint-disable-next-line sonarjs/prefer-single-boolean-return
-    if (pokemon.id === pokemonId) {
-      return true;
-    } else {
-      return false;
-    }
-  });
+export async function getServerSideProps(context) {
   const likedPokemonsOnCookies = context.req.cookies.likedPokemons || '[]';
 
   const likedPokemons = JSON.parse(likedPokemonsOnCookies);
+  const pokemonId = context.query.pokemonId;
+
+  // this is the variable we get from url
+  // const matchingPokemon = pokemonsInDb.find((pokemon) => {
+  //   // eslint-disable-next-line sonarjs/prefer-single-boolean-return
+  //   if (pokemon.id === pokemonId) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // });
+
+  const pokemon = await getSinglePokemon(pokemonId);
   return {
     props: {
       likedPokemons: likedPokemons,
-      pokemon: matchingPokemon,
-      pokemonDatabase: pokemonDatabase,
+      pokemon: pokemon,
     },
   };
 }
