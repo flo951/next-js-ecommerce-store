@@ -35,10 +35,10 @@ export default function Header(props) {
       </Link>
       <div>
         <Link href="/cart">
-          <a>Cart</a>
+          <a data-test-id="cart-link">Cart</a>
         </Link>
 
-        <span>{JSON.stringify(props.items)}</span>
+        <span data-test-id="cart-count">{JSON.stringify(props.items)}</span>
       </div>
     </header>
   );
