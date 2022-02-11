@@ -3,7 +3,6 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import Layout from '../components/Layout';
-import pokemonDatabase from '../util/database';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
 
@@ -28,9 +27,9 @@ const miniCardStyles = css`
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-
+  padding: 12px;
   align-items: center;
-  width: 25%;
+  min-width: 15vw;
 `;
 const addButtonStyles = css`
   margin-top: 8px;
@@ -47,6 +46,23 @@ const addButtonStyles = css`
     box-shadow: rgba(240, 46, 170, 0.4) 0px 5px,
       rgba(240, 46, 170, 0.3) 0px 10px, rgba(240, 46, 170, 0.2) 0px 15px,
       rgba(240, 46, 170, 0.1) 0px 20px, rgba(240, 46, 170, 0.05) 0px 25px;
+  }
+`;
+
+const counterButtonStyles = css`
+  padding: 4px;
+  background-color: #297cdb;
+  color: white;
+  border-radius: 8px;
+
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+  :hover {
+    box-shadow: rgba(240, 46, 170, 0.4) 0px 5px,
+      rgba(240, 46, 170, 0.3) 0px 10px, rgba(240, 46, 170, 0.2) 0px 15px,
+      rgba(240, 46, 170, 0.1) 0px 20px, rgba(240, 46, 170, 0.05) 0px 25px;
+    transition: ease-out 0.3s;
   }
 `;
 
@@ -103,9 +119,10 @@ export default function Cart(props) {
 
                 <h3> {pokemon.price} €</h3>
 
-                <span>{pokemon.amount} pieces</span>
+                <span> Amount: {pokemon.amount}</span>
 
                 <button
+                  css={counterButtonStyles}
                   onClick={() => {
                     handleDeleteCookie(pokemon.id);
                   }}
@@ -117,14 +134,17 @@ export default function Cart(props) {
             );
           })}
         </div>
-
-        <h2 data-test-id="cart-total">Total: {priceSum} €</h2>
-        <span>for {amountSum} pieces</span>
-        <Link href="/checkout">
-          <a css={addButtonStyles} data-test-id="cart-checkout">
-            Checkout
-          </a>
-        </Link>
+        <div>
+          <h2 data-test-id="cart-total">Total: {priceSum} €</h2>
+          <span>for {amountSum} Cards</span>
+          <Link href="/checkout">
+            <a>
+              <button css={addButtonStyles} data-test-id="cart-checkout">
+                Checkout
+              </button>
+            </a>
+          </Link>
+        </div>
       </div>
     </Layout>
   );
@@ -144,8 +164,6 @@ export function getServerSideProps(context) {
   return {
     props: {
       likedPokemons: likedPokemons,
-
-      pokemonDatabase: pokemonDatabase,
     },
   };
 }
