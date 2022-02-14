@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
 import { getSinglePokemon } from '../../util/database';
 import Cookies from 'js-cookie';
@@ -12,6 +12,7 @@ const centerCardStyles = css`
   align-items: center;
   justify-content: center;
   color: white;
+  margin-bottom: 3rem;
 `;
 const pokemonCardStyles = css`
   width: 300px;
@@ -43,7 +44,7 @@ const counterDivStyles = css`
 
 const counterButtonStyles = css`
   padding: 4px;
-  background-color: #01397a;
+  background-color: #939994;
   color: white;
   border-radius: 8px;
   height: 40px;
@@ -59,7 +60,7 @@ const counterButtonStyles = css`
 const addButtonStyles = css`
   margin-top: 8px;
   padding: 16px 8px;
-  background-color: #01397a;
+  background-color: #939994;
   color: white;
   border: none;
   border-radius: 8px;
@@ -155,21 +156,22 @@ export default function SingleProduct(props) {
     return likedObject.id === props.pokemon.id;
   });
 
-  let sum = 0;
-  likedArray.forEach(function (element) {
-    sum += element.amount;
-  });
-
-  console.log(sum);
+  // let sum = 0;
+  // likedArray.forEach(function (element) {
+  //   sum += element.amount;
+  // });
 
   return (
-    <Layout items={sum}>
+    <>
       <Head>
         <title>{props.pokemon.name}</title>
       </Head>
+
       <div css={centerCardStyles}>
+        <h3>{addedToCart}</h3>
         <div css={pokemonCardStyles}>
           <h1>{props.pokemon.name}</h1>
+
           <Image
             css={imageStyles}
             src={`/pokemon-images/${props.pokemon.id}.jpeg`}
@@ -179,47 +181,38 @@ export default function SingleProduct(props) {
           />
 
           <h3> {props.pokemon.price} €</h3>
-        </div>
-        <p>{minAmount}</p>
-        <div css={counterDivStyles}>
-          <div>
+          <div css={counterDivStyles}>
+            <p>{minAmount}</p>
+            <div>
+              <button
+                css={counterButtonStyles}
+                onClick={() => {
+                  handleDecrementAmount();
+                }}
+              >
+                -
+              </button>
+              <span css={spanStyles}>{amount}</span>
+              <button
+                css={counterButtonStyles}
+                onClick={() => {
+                  handleIncrementAmount();
+                }}
+              >
+                +
+              </button>{' '}
+            </div>
             <button
-              css={counterButtonStyles}
-              onClick={() => {
-                handleDecrementAmount();
-              }}
+              css={addButtonStyles}
+              data-test-id="product-add-to-cart"
+              onClick={() => handleAddToCookie(props.pokemon.id)}
             >
-              -
+              Add to cart
             </button>
-            <span css={spanStyles}>{amount}</span>
-            <button
-              css={counterButtonStyles}
-              onClick={() => {
-                handleIncrementAmount();
-              }}
-            >
-              +
-            </button>{' '}
           </div>
-          <button
-            css={addButtonStyles}
-            data-test-id="product-add-to-cart"
-            onClick={() => handleAddToCookie(props.pokemon.id)}
-          >
-            Add to cart
-          </button>
-
-          <p>{addedToCart}</p>
         </div>
-
-        <button onClick={() => handleAddToCookie(props.pokemon.id)}>
-          Delete from Cart
-        </button>
-        {pokemonIsLiked
-          ? 'Already in your Cart'
-          : 'Buy now before its sold out!'}
       </div>
-    </Layout>
+    </>
   );
 }
 
@@ -229,16 +222,7 @@ export async function getServerSideProps(context) {
   const likedPokemons = JSON.parse(likedPokemonsOnCookies);
   const pokemonId = context.query.pokemonId;
 
-  // this is the variable we get from url
-  // const matchingPokemon = pokemonsInDb.find((pokemon) => {
-  //   // eslint-disable-next-line sonarjs/prefer-single-boolean-return
-  //   if (pokemon.id === pokemonId) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // });
-
+  // Only get single pokemon with id from db and store it in variable pokemon
   const pokemon = await getSinglePokemon(pokemonId);
   return {
     props: {
