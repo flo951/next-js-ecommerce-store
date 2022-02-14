@@ -1,6 +1,26 @@
 import { css, Global } from '@emotion/react';
+import { useEffect, useState } from 'react';
+import Layout from '../components/Layout';
 
-function MyApp({ Component, pageProps }) {
+export default function MyApp({ Component, pageProps }) {
+  const [amountInCart, setAmountInCart] = useState(0);
+  const [pokemonsInCart, setpokemonsInCart] = useState(pageProps.likedPokemons);
+
+  console.log(amountInCart);
+
+  useEffect(() => {
+    const getAmount = () => {
+      let sum = 0;
+      pokemonsInCart.forEach((element) => {
+        sum += element.amount;
+      });
+
+      setAmountInCart(sum);
+    };
+
+    getAmount();
+  }, [amountInCart, pokemonsInCart]);
+
   return (
     <>
       <Global
@@ -16,10 +36,9 @@ function MyApp({ Component, pageProps }) {
           }
         `}
       />
-      {/* component for each of the pages */}
-      <Component {...pageProps} />
+      <Layout items={amountInCart}>
+        <Component {...pageProps} />
+      </Layout>
     </>
   );
 }
-
-export default MyApp;
