@@ -2,7 +2,6 @@ import { css } from '@emotion/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import Layout from '../components/Layout';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
 
@@ -14,9 +13,10 @@ const itemsInCartStyles = css`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+  padding: 0rem 2rem;
   gap: 3rem;
   margin-bottom: 2rem;
-  justify-content: center;
+
   color: white;
 `;
 const imageStyles = css`
@@ -31,6 +31,7 @@ const miniCardStyles = css`
   align-items: center;
   min-width: 15vw;
 `;
+
 const addButtonStyles = css`
   margin-top: 8px;
   padding: 16px 8px;
@@ -65,9 +66,16 @@ const counterButtonStyles = css`
     transition: ease-out 0.3s;
   }
 `;
-
+const checkoutStyles = css`
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  justify-content: center;
+  align-items: center;
+`;
 export default function Cart(props) {
   const [pokemonsInCart, setPokemonsInCart] = useState(props.likedPokemons);
+  const [newPrice, setNewPrice] = useState(0);
 
   let priceSum = 0;
   props.likedPokemons.forEach(function (element) {
@@ -80,10 +88,10 @@ export default function Cart(props) {
   });
 
   function handleDeleteCookie(id) {
+    // filter products with different id than product to delete and return them
     const newCookie = pokemonsInCart.filter((cookieObject) => {
       return cookieObject.id !== id;
     });
-    console.log(newCookie);
 
     setPokemonsInCart(newCookie);
     Cookies.set('likedPokemons', JSON.stringify(newCookie));
@@ -98,7 +106,7 @@ export default function Cart(props) {
   }
 
   return (
-    <Layout>
+    <>
       <Head>
         <title>Cart</title>
         <meta name="description" content="Cart" />
@@ -134,9 +142,11 @@ export default function Cart(props) {
             );
           })}
         </div>
-        <div>
-          <h2 data-test-id="cart-total">Total: {priceSum} €</h2>
-          <span>for {amountSum} Cards</span>
+        <div css={checkoutStyles}>
+          <h2 data-test-id="cart-total">
+            Total: {priceSum} € for {amountSum} Cards
+          </h2>
+
           <Link href="/checkout">
             <a>
               <button css={addButtonStyles} data-test-id="cart-checkout">
@@ -146,7 +156,7 @@ export default function Cart(props) {
           </Link>
         </div>
       </div>
-    </Layout>
+    </>
   );
 }
 
