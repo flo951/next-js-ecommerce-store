@@ -4,22 +4,24 @@ import Layout from '../components/Layout';
 
 export default function MyApp({ Component, pageProps }) {
   const [amountInCart, setAmountInCart] = useState(0);
-  const [pokemonsInCart, setpokemonsInCart] = useState(pageProps.likedPokemons);
+  const [pokemonsInCart, setPokemonsInCart] = useState(pageProps.likedPokemons);
 
-  console.log(amountInCart);
+  // map over pokemons incart, return amount for every id. then foreach
+  console.log(pageProps);
 
   useEffect(() => {
     const getAmount = () => {
-      let sum = 0;
-      pokemonsInCart.forEach((element) => {
-        sum += element.amount;
+      const amountPokemon = pokemonsInCart.map((pokemon) => {
+        return pokemon.amount;
       });
+      console.log(amountPokemon);
 
+      const sum = amountPokemon.reduce((partialSum, a) => partialSum + a, 0);
       setAmountInCart(sum);
     };
 
     getAmount();
-  }, [amountInCart, pokemonsInCart]);
+  }, [pokemonsInCart]);
 
   return (
     <>
