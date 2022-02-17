@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
+import { getPokemons } from '../util/database';
 
 const formContainerStyles = css`
   display: flex;
@@ -72,7 +73,8 @@ const inputSubmitStyles = css`
       rgba(240, 46, 170, 0.1) 0px 20px, rgba(240, 46, 170, 0.05) 0px 25px;
   }
 `;
-export default function Checkout() {
+export default function Checkout(props) {
+  console.log(props);
   return (
     <>
       <Head>
@@ -186,4 +188,23 @@ export default function Checkout() {
       </div>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  // context allow to acces cookies
+  // important, always return an object from getserversideprops and always return a key (props is the key)
+
+  const likedPokemonsOnCookies = context.req.cookies.likedPokemons || '[]';
+
+  const likedPokemons = JSON.parse(likedPokemonsOnCookies);
+  // // 1. get the cookies from the browser
+
+  // 2. pass the cookies to the frontend
+  const pokemonsInDb = await getPokemons();
+  return {
+    props: {
+      likedPokemons: likedPokemons,
+      pokemonsInDb,
+    },
+  };
 }
