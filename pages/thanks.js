@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
-import Layout from '../components/Layout';
 import { getPokemons } from '../util/database';
 
 const headingStyles = css`
