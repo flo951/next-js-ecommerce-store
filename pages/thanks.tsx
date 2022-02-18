@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
-import Layout from '../components/Layout';
-import { getPokemons, getSinglePokemon } from '../util/database';
+
+import { getPokemons } from '../util/database';
 
 const headingStyles = css`
   color: white;
