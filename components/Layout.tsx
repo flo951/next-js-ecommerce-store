@@ -1,14 +1,17 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
+import { Pokemon } from '../pages/products/[pokemonId]';
 
-import Footer from './Footer';
 import Header from './Header';
 
 const bodyStyles = css``;
 
 type Props = {
-  items: object;
+  items: any;
   children: object;
+  // setAmountInCart: any;
+  // pokemon: Pokemon;
+  // likedPokemons: Pokemon[];
 };
 
 export default function Layout(props: Props) {
@@ -21,7 +24,6 @@ export default function Layout(props: Props) {
       <Header items={props.items} />
 
       <main css={bodyStyles}>{props.children}</main>
-      <Footer />
     </div>
   );
 }
