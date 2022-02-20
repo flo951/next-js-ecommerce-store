@@ -17,9 +17,9 @@ test('sum pokemons in cart', () => {
 test('update amount of in cookie when adding same product', () => {
   const updatePokemons = [
     { id: 2, amount: 2, name: 'Bisasam' },
-    { id: 1, amount: 4, name: 'Glumanda' },
+    { id: 1, amount: 6, name: 'Glumanda' },
   ];
-  expect(updateAmount(1, 2, pokemons)).toStrictEqual(updatePokemons);
+  expect(updateAmount(1, 4, pokemons)).toStrictEqual(updatePokemons);
 });
 
 test('delete pokemon with id 1', () => {
