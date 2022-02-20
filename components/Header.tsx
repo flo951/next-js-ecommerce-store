@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
+import { useEffect, useState } from 'react';
+import { Pokemon } from '../pages/products/[pokemonId]';
 
 const headerStyles = css`
   padding: 20px 20px;
@@ -46,10 +48,28 @@ const flexContainerStyles = css`
 `;
 
 type Props = {
-  items: object;
+  items: any;
+  // pokemon: Pokemon;
+  // likedPokemons: Pokemon[];
+  // setAmountInCart: any;
 };
 
 export default function Header(props: Props) {
+  //const [amount, setAmount] = useState(0);
+  // console.log(props.likedPokemons);
+  // useEffect(() => {
+  //   const getAmount = async () => {
+  //     const amountPokemon = props.likedPokemons.map((pokemon) => {
+  //       return pokemon.amount;
+  //     });
+
+  //     const sum = amountPokemon.reduce((partialSum, a) => partialSum + a, 0);
+
+  //     await props.setAmountInCart(sum);
+  //   };
+  //   getAmount();
+  // }, [props]);
+
   return (
     <header css={headerStyles}>
       <Link href="/">
@@ -68,14 +88,14 @@ export default function Header(props: Props) {
   );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const likedPokemonsOnCookies = context.req.cookies.likedPokemons || '[]';
+// export async function getServerSideProps(context: GetServerSidePropsContext) {
+//   const likedPokemonsOnCookies = context.req.cookies.likedPokemons || '[]';
 
-  const likedPokemons = await JSON.parse(likedPokemonsOnCookies);
+//   const likedPokemons = await JSON.parse(likedPokemonsOnCookies);
 
-  return {
-    props: {
-      likedPokemons: likedPokemons,
-    },
-  };
-}
+//   return {
+//     props: {
+//       likedPokemons: likedPokemons,
+//     },
+//   };
+// }
