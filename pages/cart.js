@@ -1,9 +1,11 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
 import Image from 'next/image';
-import Link from 'next/link';
 import Cookies from 'js-cookie';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getPokemons } from '../util/database';
+import Layout from '../components/Layout';
+import Router from 'next/router';
 
 const containerStyles = css`
   color: white;
@@ -76,10 +78,26 @@ const checkoutStyles = css`
 export default function Cart(props) {
   const [pokemonsInCart, setPokemonsInCart] = useState(props.likedPokemons);
   const [newPrice, setNewPrice] = useState(0);
+  const [amount, setAmount] = useState(0);
+  console.log(props);
+  useEffect(() => {
+    const getAmount = () => {
+      console.log(props.likedPokemons);
+      const pricePokemon = props.likedPokemons.map((pokemon) => {
+        return pokemon.amount;
+      });
+
+      const sum = pricePokemon.reduce((partialSum, a) => partialSum + a, 0);
+
+      setAmount(sum);
+    };
+
+    getAmount();
+  }, []);
 
   let priceSum = 0;
   props.likedPokemons.forEach(function (element) {
-    priceSum += element.price;
+    priceSum += props.pokemonsInDb[element.id - 1].price * element.amount;
   });
 
   let amountSum = 0;
@@ -96,13 +114,17 @@ export default function Cart(props) {
     setPokemonsInCart(newCookie);
     Cookies.set('likedPokemons', JSON.stringify(newCookie));
 
-    priceSum = newCookie.forEach(function (element) {
-      priceSum += element.price;
-    });
-
     amountSum = newCookie.forEach(function (element) {
       amountSum += element.amount;
     });
+
+    const amountPokemon = newCookie.map((pokemon) => {
+      return pokemon.amount;
+    });
+    console.log(amountPokemon);
+
+    const sum = amountPokemon.reduce((partialSum, a) => partialSum + a, 0);
+    setAmount(sum);
   }
 
   return (
@@ -111,56 +133,64 @@ export default function Cart(props) {
         <title>Cart</title>
         <meta name="description" content="Cart" />
       </Head>
-      <div css={containerStyles}>
-        <div css={itemsInCartStyles} data-test-id="cart-product-product id">
-          {pokemonsInCart.map((pokemon) => {
-            return (
-              <div css={miniCardStyles} key={`pokemon-${pokemon.id}`}>
-                <h1>{pokemon.name}</h1>
-                <Image
-                  css={imageStyles}
-                  src={`/pokemon-images/${pokemon.id}.jpeg`}
-                  alt={pokemon.name}
-                  width="75"
-                  height="75"
-                />
+      <Layout items={amount}>
+        <div css={containerStyles}>
+          <div css={itemsInCartStyles} data-test-id="cart-product-product id">
+            {pokemonsInCart.map((pokemon) => {
+              return (
+                <div css={miniCardStyles} key={`pokemon-${pokemon.id}`}>
+                  <h1>{pokemon.name}</h1>
+                  <Image
+                    css={imageStyles}
+                    src={`/pokemon-images/${pokemon.id}.jpeg`}
+                    alt={pokemon.name}
+                    width="75"
+                    height="75"
+                  />
+                  {console.log(props.pokemonsInDb[pokemon.id - 1].price)}
+                  <h3>
+                    {/* {props.pokemonsInDb[pokemon.id - 1].price * pokemon.amount} € */}
+                    {pokemon.amount < 0
+                      ? handleDeleteCookie(pokemon.id)
+                      : props.pokemonsInDb[pokemon.id - 1].price *
+                        pokemon.amount}
+                  </h3>
 
-                <h3> {pokemon.price} €</h3>
+                  <span> Amount: {pokemon.amount}</span>
 
-                <span> Amount: {pokemon.amount}</span>
+                  <button
+                    css={counterButtonStyles}
+                    onClick={() => {
+                      handleDeleteCookie(pokemon.id);
+                    }}
+                    data-test-id={`cart-product-remove-${pokemon.id}`}
+                  >
+                    Remove
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+          <div css={checkoutStyles}>
+            {/* <h2 data-test-id="cart-total">
+            Total: {priceSum}€ for {amountSum} Cards
+          </h2> */}
 
-                <button
-                  css={counterButtonStyles}
-                  onClick={() => {
-                    handleDeleteCookie(pokemon.id);
-                  }}
-                  data-test-id="cart-product-remove-<product id>"
-                >
-                  Remove
-                </button>
-              </div>
-            );
-          })}
+            <button
+              onClick={() => Router.push('./checkout')}
+              css={addButtonStyles}
+              data-test-id="cart-checkout"
+            >
+              Checkout
+            </button>
+          </div>
         </div>
-        <div css={checkoutStyles}>
-          <h2 data-test-id="cart-total">
-            Total: {priceSum} € for {amountSum} Cards
-          </h2>
-
-          <Link href="/checkout">
-            <a>
-              <button css={addButtonStyles} data-test-id="cart-checkout">
-                Checkout
-              </button>
-            </a>
-          </Link>
-        </div>
-      </div>
+      </Layout>
     </>
   );
 }
 
-export function getServerSideProps(context) {
+export async function getServerSideProps(context) {
   // context allow to acces cookies
   // important, always return an object from getserversideprops and always return a key (props is the key)
 
@@ -170,10 +200,11 @@ export function getServerSideProps(context) {
   // // 1. get the cookies from the browser
 
   // 2. pass the cookies to the frontend
-
+  const pokemonsInDb = await getPokemons();
   return {
     props: {
       likedPokemons: likedPokemons,
+      pokemonsInDb,
     },
   };
 }
