@@ -15,14 +15,14 @@ const centerHeadingStyles = css`
 
 export default function Thanks() {
   return (
-    <div>
+    <>
       <Head>
         <title>Thank you for your order</title>
       </Head>
       <div css={centerHeadingStyles}>
         <h1 css={headingStyles}>Thank you for your purchase</h1>
       </div>
-    </div>
+    </>
   );
 }
 export async function getServerSideProps(context: GetServerSidePropsContext) {
