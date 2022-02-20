@@ -1,10 +1,11 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import Layout from '../../components/Layout';
+import { useState, useEffect } from 'react';
 import { getSinglePokemon } from '../../util/database';
 import Cookies from 'js-cookie';
+import { GetServerSidePropsContext } from 'next';
+import Layout from '../../components/Layout';
 
 const centerCardStyles = css`
   display: flex;
@@ -51,6 +52,7 @@ const counterButtonStyles = css`
   width: 40px;
   font-size: 26px;
   border: none;
+
   cursor: pointer;
   :hover {
     background-color: #297cdb;
@@ -79,11 +81,41 @@ const spanStyles = css`
   margin: 2px 8px;
 `;
 
-export default function SingleProduct(props) {
-  const [likedArray, setLikedArray] = useState(props.likedPokemons);
+export type Pokemon = {
+  id: number;
+  name: string;
+  price?: number;
+  amount: number;
+};
+
+type Props = {
+  pokemon: Pokemon;
+  likedPokemons: Pokemon[];
+  amountInCart: any;
+  items: any;
+};
+
+export default function SingleProduct(props: Props) {
+  const [likedArray, setLikedArray] = useState<object>(props.likedPokemons);
   const [amount, setAmount] = useState(1);
+  const [amountInCart, setAmountInCart] = useState<Number>();
   const [minAmount, setMinAmount] = useState('');
   const [addedToCart, setAddedToCart] = useState('');
+
+  useEffect(() => {
+    const getAmount = () => {
+      console.log(props.likedPokemons);
+      const pricePokemon = props.likedPokemons.map((pokemon) => {
+        return pokemon.amount;
+      });
+
+      const sum = pricePokemon.reduce((partialSum, a) => partialSum + a, 0);
+
+      setAmountInCart(sum);
+    };
+
+    getAmount();
+  }, []);
 
   const handleIncrementAmount = () => {
     setAmount(amount + 1);
@@ -98,125 +130,146 @@ export default function SingleProduct(props) {
     setAmount(amount - 1);
   };
 
-  function handleAddToCookie(id) {
+  function handleAddToCookie(id: Number) {
     if (amount === 1) {
       setAddedToCart(`You added one card!`);
     } else {
       setAddedToCart(`You added ${amount} cards!`);
     }
 
-    const cookieValue = JSON.parse(Cookies.get('likedPokemons') || '[]');
+    const cookieValue: Array = JSON.parse(Cookies.get('likedPokemons') || '[]');
 
-    const existOnArray = cookieValue.some((cookieObject) => {
+    type Object = {
+      id: number;
+    };
+
+    const existOnArray = cookieValue.some((cookieObject: Object) => {
       return cookieObject.id === id;
     });
 
-    const pokemonInCart = cookieValue.find((cookieObject) => {
+    const pokemonInCart = cookieValue.find((cookieObject: Object) => {
       return cookieObject.id === id;
     });
+    type Array = [
+      {
+        id: number;
+        amount: number;
+        name: string;
+      },
+    ];
 
     let newCookie;
-    if (existOnArray) {
-      const newAmount = amount + pokemonInCart.amount;
+    if (existOnArray && pokemonInCart !== undefined) {
+      const newAmount: number = amount + pokemonInCart.amount;
 
       newCookie = [
         ...cookieValue,
         {
-          id: id,
+          id: props.pokemon.id,
           amount: newAmount,
-          price: props.pokemon.price * newAmount,
+
           name: props.pokemon.name,
         },
       ];
+
       // filter products that are not to be updated, and filter out the old product that is updated
       const cookieUpdated = newCookie.filter(
         (cookieObject) =>
           cookieObject.id !== id ||
-          (cookieObject.id === id) & (cookieObject.amount === newAmount),
+          (cookieObject.id === id && cookieObject.amount === newAmount),
       );
 
       setLikedArray(cookieUpdated);
       Cookies.set('likedPokemons', JSON.stringify(cookieUpdated));
+
+      const pricePokemon = cookieUpdated.map((pokemon) => {
+        return pokemon.amount;
+      });
+
+      const sum = pricePokemon.reduce((partialSum, a) => partialSum + a, 0);
+
+      setAmountInCart(sum);
     } else {
       newCookie = [
         ...cookieValue,
         {
-          id: id,
+          id: props.pokemon.id,
           amount: amount,
-          price: props.pokemon.price * amount,
+
           name: props.pokemon.name,
         },
       ];
       // 3. set the new value of the cookie
       setLikedArray(newCookie);
       Cookies.set('likedPokemons', JSON.stringify(newCookie));
+
+      const pricePokemon = newCookie.map((pokemon) => {
+        return pokemon.amount;
+      });
+
+      const sum = pricePokemon.reduce((partialSum, a) => partialSum + a, 0);
+
+      setAmountInCart(sum);
     }
   }
-  const pokemonIsLiked = likedArray.some((likedObject) => {
-    return likedObject.id === props.pokemon.id;
-  });
-
-  // let sum = 0;
-  // likedArray.forEach(function (element) {
-  //   sum += element.amount;
-  // });
 
   return (
     <>
       <Head>
         <title>{props.pokemon.name}</title>
       </Head>
+      <Layout items={amountInCart}>
+        <div css={centerCardStyles}>
+          <h3>{addedToCart}</h3>
+          <div css={pokemonCardStyles}>
+            <h1>{props.pokemon.name}</h1>
 
-      <div css={centerCardStyles}>
-        <h3>{addedToCart}</h3>
-        <div css={pokemonCardStyles}>
-          <h1>{props.pokemon.name}</h1>
+            <Image
+              css={imageStyles}
+              src={`/pokemon-images/${props.pokemon.id}.jpeg`}
+              alt={props.pokemon.name}
+              width="250"
+              height="250"
+            />
 
-          <Image
-            css={imageStyles}
-            src={`/pokemon-images/${props.pokemon.id}.jpeg`}
-            alt={props.pokemon.name}
-            width="250"
-            height="250"
-          />
-
-          <h3> {props.pokemon.price} €</h3>
-          <div css={counterDivStyles}>
-            <p>{minAmount}</p>
-            <div>
+            <h3> {props.pokemon.price} €</h3>
+            <div css={counterDivStyles}>
+              <p>{minAmount}</p>
+              <div>
+                <button
+                  css={counterButtonStyles}
+                  onClick={() => {
+                    handleDecrementAmount();
+                  }}
+                >
+                  -
+                </button>
+                <span css={spanStyles}>{amount}</span>
+                <button
+                  css={counterButtonStyles}
+                  onClick={() => {
+                    handleIncrementAmount();
+                  }}
+                >
+                  +
+                </button>{' '}
+              </div>
               <button
-                css={counterButtonStyles}
-                onClick={() => {
-                  handleDecrementAmount();
-                }}
+                css={addButtonStyles}
+                data-test-id="product-add-to-cart"
+                onClick={() => handleAddToCookie(props.pokemon.id)}
               >
-                -
+                Add to cart
               </button>
-              <span css={spanStyles}>{amount}</span>
-              <button
-                css={counterButtonStyles}
-                onClick={() => {
-                  handleIncrementAmount();
-                }}
-              >
-                +
-              </button>{' '}
             </div>
-            <button
-              css={addButtonStyles}
-              data-test-id="product-add-to-cart"
-              onClick={() => handleAddToCookie(props.pokemon.id)}
-            >
-              Add to cart
-            </button>
           </div>
         </div>
-      </div>
+      </Layout>
     </>
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const likedPokemonsOnCookies = context.req.cookies.likedPokemons || '[]';
 
   const likedPokemons = JSON.parse(likedPokemonsOnCookies);
