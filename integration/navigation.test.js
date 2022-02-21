@@ -72,4 +72,5 @@ test('Checkout flow', async () => {
   await expect(page).toClick('[data-test-id="checkout-confirm-order"]');
   await page.waitForNavigation();
   expect(page.url()).toBe(`${baseUrl}/thanks`);
+  await expect(page).toMatch('Thank you for your order');
 });
