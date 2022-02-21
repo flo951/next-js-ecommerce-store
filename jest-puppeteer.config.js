@@ -2,7 +2,7 @@ module.exports = {
   launch: {
     // headless: false,
   },
-  browserContext: 'default',
+  // browserContext: 'default',
   server: {
     command: 'yarn start',
   },
