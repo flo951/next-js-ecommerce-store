@@ -2,8 +2,8 @@ module.exports = {
   launch: {
     headless: false,
   },
-  browserContext: 'default',
-  server: {
-    command: 'yarn dev',
-  },
+  // browserContext: 'default',
+  // server: {
+  //   command: 'yarn dev',
+  // },
 };
