@@ -87,8 +87,8 @@ export default function Cart(props) {
 
       setAmount(sum);
 
-      const pricePokemon = props.cart.map((pokemon) => {
-        return props.pokemonsInDb[pokemon.id - 1].price;
+      const pricePokemon = pokemonsInCart.map((pokemon) => {
+        return props.pokemonsInDb[pokemon.id - 1].price * pokemon.amount;
       });
 
       const sumPrice = pricePokemon.reduce(
@@ -130,7 +130,7 @@ export default function Cart(props) {
     setAmount(sum);
 
     const pricePokemon = newCookie.map((pokemon) => {
-      return props.pokemonsInDb[pokemon.id - 1].price;
+      return props.pokemonsInDb[pokemon.id - 1].price * pokemon.amount;
     });
 
     const sumPrice = pricePokemon.reduce((partialSum, a) => partialSum + a, 0);
@@ -184,7 +184,7 @@ export default function Cart(props) {
           </div>
           <div css={checkoutStyles}>
             <h2 data-test-id="cart-total">
-              Total: {newPrice}€ for {amount} Cards
+              Total: {newPrice}€ for {amount} {amount > 1 ? 'Cards' : 'Card'}
             </h2>
 
             <button
