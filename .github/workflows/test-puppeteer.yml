@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PGHOST: localhost
-      PGDATABASE: next_js_ecommerce_store_db
-      PGUSERNAME: next_js_ecommerce_store_db
-      PGPASSWORD: next_js_ecommerce_store_db
+      PGDATABASE: next_js_example_jan_2022
+      PGUSERNAME: next_js_example_jan_2022
+      PGPASSWORD: next_js_example_jan_2022
     steps:
       - name: Start preinstalled PostgreSQL on Ubuntu
         run: |
@@ -20,10 +20,10 @@ jobs:
           pg_isready
       - name: Create database user
         run: |
-          sudo -u postgres psql --command="CREATE USER next_js_ecommerce_store_db PASSWORD 'next_js_ecommerce_store_db'" --command="\du"
+          sudo -u postgres psql --command="CREATE USER next_js_example_jan_2022 PASSWORD 'next_js_example_jan_2022'" --command="\du"
       - name: Create database and allow user
         run: |
-          sudo -u postgres createdb --owner=next_js_ecommerce_store_db next_js_ecommerce_store_db
+          sudo -u postgres createdb --owner=next_js_example_jan_2022 next_js_example_jan_2022
       # Use the official Checkout action (clones the GitHub repo):
       # https://github.com/actions/checkout
       - uses: actions/checkout@v2
@@ -38,6 +38,6 @@ jobs:
       # Run the migrations
       - run: yarn migrate up
       # Build the Next.js application
-      - run: yarn next build
+      - run: yarn build
       # Run the Jest unit tests
       - run: yarn jest --config integration/jest.config.mjs
