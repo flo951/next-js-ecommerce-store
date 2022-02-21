@@ -1,11 +1,32 @@
 import postgres from 'postgres';
 import { config } from 'dotenv-safe';
+import setPostgresDefaultsOnHeroku from './setPostgresDefaultsOnHeroku.js';
+
 // use camelcaseKeys for names with z.B. first_name to convert it automatically for js to firstName
 // Read environment variables from .env, which will then bei available for all following code
+setPostgresDefaultsOnHeroku();
 config();
 
+function connectOneTimeToDatabase() {
+  let sql;
+
+  if (process.env.NODE_ENV === 'production' && process.env.DATABASE_URL) {
+    // sql = postgres();
+    // Heroku needs SSL connections but
+    // has an "unauthorized" certificate
+    // https://devcenter.heroku.com/changelog-items/852
+    sql = postgres({ ssl: { rejectUnauthorized: false } });
+  } else {
+    if (!globalThis.__postgresSqlClient) {
+      globalThis.__postgresSqlClient = postgres();
+    }
+    sql = globalThis.__postgresSqlClient;
+  }
+  return sql;
+}
+
 // connect to database
-const sql = postgres();
+const sql = connectOneTimeToDatabase();
 
 export async function getPokemons() {
   const pokemons = await sql`
