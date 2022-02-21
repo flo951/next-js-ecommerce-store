@@ -37,7 +37,7 @@ const miniCardStyles = css`
 const addButtonStyles = css`
   margin-top: 8px;
   padding: 16px 8px;
-  background-color: #01397a;
+  background-color: #787878;
   color: white;
   border: none;
   border-radius: 8px;
@@ -46,26 +46,22 @@ const addButtonStyles = css`
 
   :hover {
     transition: ease-out 0.3s;
-    box-shadow: rgba(240, 46, 170, 0.4) 0px 5px,
-      rgba(240, 46, 170, 0.3) 0px 10px, rgba(240, 46, 170, 0.2) 0px 15px,
-      rgba(240, 46, 170, 0.1) 0px 20px, rgba(240, 46, 170, 0.05) 0px 25px;
+    background-color: black;
+    border: 2px solid white;
   }
 `;
 
 const counterButtonStyles = css`
   padding: 4px;
-  background-color: #297cdb;
+  background-color: #787878;
   color: white;
   border-radius: 8px;
-
+  margin-top: 8px;
   font-size: 18px;
   border: none;
   cursor: pointer;
   :hover {
-    box-shadow: rgba(240, 46, 170, 0.4) 0px 5px,
-      rgba(240, 46, 170, 0.3) 0px 10px, rgba(240, 46, 170, 0.2) 0px 15px,
-      rgba(240, 46, 170, 0.1) 0px 20px, rgba(240, 46, 170, 0.05) 0px 25px;
-    transition: ease-out 0.3s;
+    background-color: black;
   }
 `;
 const checkoutStyles = css`
@@ -76,34 +72,47 @@ const checkoutStyles = css`
   align-items: center;
 `;
 export default function Cart(props) {
-  const [pokemonsInCart, setPokemonsInCart] = useState(props.likedPokemons);
+  const [pokemonsInCart, setPokemonsInCart] = useState(props.cart);
   const [newPrice, setNewPrice] = useState(0);
+  const [newAmountSum, setNewAmountSum] = useState(0);
+
   const [amount, setAmount] = useState(0);
   console.log(props);
   useEffect(() => {
     const getAmount = () => {
-      console.log(props.likedPokemons);
-      const pricePokemon = props.likedPokemons.map((pokemon) => {
+      console.log(props.cart);
+      const amountPokemon = props.cart.map((pokemon) => {
         return pokemon.amount;
       });
 
-      const sum = pricePokemon.reduce((partialSum, a) => partialSum + a, 0);
+      const sum = amountPokemon.reduce((partialSum, a) => partialSum + a, 0);
 
       setAmount(sum);
+
+      const pricePokemon = props.cart.map((pokemon) => {
+        return props.pokemonsInDb[pokemon.id - 1].price;
+      });
+
+      const sumPrice = pricePokemon.reduce(
+        (partialSum, a) => partialSum + a,
+        0,
+      );
+      console.log(sumPrice);
+      setNewPrice(sumPrice);
     };
 
     getAmount();
   }, []);
 
-  let priceSum = 0;
-  props.likedPokemons.forEach(function (element) {
-    priceSum += props.pokemonsInDb[element.id - 1].price * element.amount;
-  });
+  // let priceSum = 0;
+  // props.likedPokemons.forEach(function (element) {
+  //   priceSum += props.pokemonsInDb[element.id - 1].price * element.amount;
+  // });
 
-  let amountSum = 0;
-  props.likedPokemons.forEach(function (element) {
-    amountSum += element.amount;
-  });
+  // let amountSum = 0;
+  // props.likedPokemons.forEach(function (element) {
+  //   amountSum += element.amount;
+  // });
 
   function handleDeleteCookie(id) {
     // filter products with different id than product to delete and return them
@@ -112,11 +121,7 @@ export default function Cart(props) {
     });
 
     setPokemonsInCart(newCookie);
-    Cookies.set('likedPokemons', JSON.stringify(newCookie));
-
-    amountSum = newCookie.forEach(function (element) {
-      amountSum += element.amount;
-    });
+    Cookies.set('cart', JSON.stringify(newCookie));
 
     const amountPokemon = newCookie.map((pokemon) => {
       return pokemon.amount;
@@ -125,13 +130,21 @@ export default function Cart(props) {
 
     const sum = amountPokemon.reduce((partialSum, a) => partialSum + a, 0);
     setAmount(sum);
+
+    const pricePokemon = newCookie.map((pokemon) => {
+      return props.pokemonsInDb[pokemon.id - 1].price;
+    });
+
+    const sumPrice = pricePokemon.reduce((partialSum, a) => partialSum + a, 0);
+    console.log(sumPrice);
+    setNewPrice(sumPrice);
   }
 
   return (
     <>
       <Head>
         <title>Cart</title>
-        <meta name="description" content="Cart" />
+        <meta name="Cart" content="Products in cart" />
       </Head>
       <Layout items={amount}>
         <div css={containerStyles}>
@@ -147,13 +160,13 @@ export default function Cart(props) {
                     width="75"
                     height="75"
                   />
-                  {console.log(props.pokemonsInDb[pokemon.id - 1].price)}
+
                   <h3>
-                    {/* {props.pokemonsInDb[pokemon.id - 1].price * pokemon.amount} € */}
                     {pokemon.amount < 0
                       ? handleDeleteCookie(pokemon.id)
                       : props.pokemonsInDb[pokemon.id - 1].price *
-                        pokemon.amount}
+                        pokemon.amount}{' '}
+                    €
                   </h3>
 
                   <span> Amount: {pokemon.amount}</span>
@@ -172,9 +185,9 @@ export default function Cart(props) {
             })}
           </div>
           <div css={checkoutStyles}>
-            {/* <h2 data-test-id="cart-total">
-            Total: {priceSum}€ for {amountSum} Cards
-          </h2> */}
+            <h2 data-test-id="cart-total">
+              Total: {newPrice}€ for {amount} Cards
+            </h2>
 
             <button
               onClick={() => Router.push('./checkout')}
@@ -194,16 +207,16 @@ export async function getServerSideProps(context) {
   // context allow to acces cookies
   // important, always return an object from getserversideprops and always return a key (props is the key)
 
-  const likedPokemonsOnCookies = context.req.cookies.likedPokemons || '[]';
+  const cartOnCookies = context.req.cookies.cart || '[]';
 
-  const likedPokemons = JSON.parse(likedPokemonsOnCookies);
+  const cart = JSON.parse(cartOnCookies);
   // // 1. get the cookies from the browser
 
   // 2. pass the cookies to the frontend
   const pokemonsInDb = await getPokemons();
   return {
     props: {
-      likedPokemons: likedPokemons,
+      cart: cart,
       pokemonsInDb,
     },
   };

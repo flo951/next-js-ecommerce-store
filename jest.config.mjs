@@ -9,9 +9,9 @@
 
 const config = {
   testEnvironment: 'jsdom',
-  testPathIgnorePatterns: ['<rootDir>/integration'],
+  // testPathIgnorePatterns: ['<rootDir>/integration'],
   // preset: 'jest-puppeteer',
-  // testPathIgnorePatterns: ['<rootDir>/pages/products/__tests__'],
+  testPathIgnorePatterns: ['<rootDir>/pages/products/__tests__'],
 };
 
 export default config;

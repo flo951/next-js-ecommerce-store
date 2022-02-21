@@ -1,6 +1,8 @@
 import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
+import Router from 'next/router';
+import { useEffect } from 'react';
 
 import { getPokemons } from '../util/database';
 
@@ -14,27 +16,35 @@ const centerHeadingStyles = css`
 `;
 
 export default function Thanks() {
+  useEffect(() => {
+    setTimeout(() => {
+      Router.push('/');
+    }, 3000);
+  });
+
   return (
     <>
       <Head>
         <title>Thank you for your order</title>
+
+        <meta name="Thank you page" content="Thank you message" />
       </Head>
       <div css={centerHeadingStyles}>
-        <h1 css={headingStyles}>Thank you for your purchase</h1>
+        <h1 css={headingStyles}>Thank you for your order</h1>
       </div>
     </>
   );
 }
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const likedPokemonsOnCookies = context.req.cookies.likedPokemons || '[]';
+  const cartOnCookies = context.req.cookies.cart || '[]';
 
-  const likedPokemons = JSON.parse(likedPokemonsOnCookies);
+  const cart = JSON.parse(cartOnCookies);
 
   // Only get single pokemon with id from db and store it in variable pokemon
   const pokemons = await getPokemons();
   return {
     props: {
-      likedPokemons: likedPokemons,
+      cart: cart,
       pokemons: pokemons,
     },
   };

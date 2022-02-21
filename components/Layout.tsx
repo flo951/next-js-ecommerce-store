@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
-import { Pokemon } from '../pages/products/[pokemonId]';
 
 import Header from './Header';
 

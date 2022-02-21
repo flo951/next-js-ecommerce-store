@@ -45,7 +45,7 @@ const counterDivStyles = css`
 
 const counterButtonStyles = css`
   padding: 4px;
-  background-color: #939994;
+  background-color: #787878;
   color: white;
   border-radius: 8px;
   height: 40px;
@@ -55,14 +55,14 @@ const counterButtonStyles = css`
 
   cursor: pointer;
   :hover {
-    background-color: #297cdb;
+    background-color: black;
     transition: ease-out 0.3s;
   }
 `;
 const addButtonStyles = css`
   margin-top: 8px;
   padding: 16px 8px;
-  background-color: #939994;
+  background-color: #787878;
   color: white;
   border: none;
   border-radius: 8px;
@@ -71,9 +71,7 @@ const addButtonStyles = css`
 
   :hover {
     transition: ease-out 0.3s;
-    box-shadow: rgba(240, 46, 170, 0.4) 0px 5px,
-      rgba(240, 46, 170, 0.3) 0px 10px, rgba(240, 46, 170, 0.2) 0px 15px,
-      rgba(240, 46, 170, 0.1) 0px 20px, rgba(240, 46, 170, 0.05) 0px 25px;
+    background-color: black;
   }
 `;
 
@@ -90,13 +88,13 @@ export type Pokemon = {
 
 type Props = {
   pokemon: Pokemon;
-  likedPokemons: Pokemon[];
-  amountInCart: any;
-  items: any;
+  cart: Pokemon[];
+  // amountInCart: any;
+  // items: any;
 };
 
 export default function SingleProduct(props: Props) {
-  const [likedArray, setLikedArray] = useState<object>(props.likedPokemons);
+  const [likedArray, setLikedArray] = useState<object>(props.cart);
   const [amount, setAmount] = useState(1);
   const [amountInCart, setAmountInCart] = useState<Number>();
   const [minAmount, setMinAmount] = useState('');
@@ -104,8 +102,8 @@ export default function SingleProduct(props: Props) {
 
   useEffect(() => {
     const getAmount = () => {
-      console.log(props.likedPokemons);
-      const pricePokemon = props.likedPokemons.map((pokemon) => {
+      console.log(props.cart);
+      const pricePokemon = props.cart.map((pokemon) => {
         return pokemon.amount;
       });
 
@@ -137,7 +135,7 @@ export default function SingleProduct(props: Props) {
       setAddedToCart(`You added ${amount} cards!`);
     }
 
-    const cookieValue: Array = JSON.parse(Cookies.get('likedPokemons') || '[]');
+    const cookieValue: Array = JSON.parse(Cookies.get('cart') || '[]');
 
     type Object = {
       id: number;
@@ -180,7 +178,7 @@ export default function SingleProduct(props: Props) {
       );
 
       setLikedArray(cookieUpdated);
-      Cookies.set('likedPokemons', JSON.stringify(cookieUpdated));
+      Cookies.set('cart', JSON.stringify(cookieUpdated));
 
       const pricePokemon = cookieUpdated.map((pokemon) => {
         return pokemon.amount;
@@ -201,7 +199,7 @@ export default function SingleProduct(props: Props) {
       ];
       // 3. set the new value of the cookie
       setLikedArray(newCookie);
-      Cookies.set('likedPokemons', JSON.stringify(newCookie));
+      Cookies.set('cart', JSON.stringify(newCookie));
 
       const pricePokemon = newCookie.map((pokemon) => {
         return pokemon.amount;
@@ -217,6 +215,8 @@ export default function SingleProduct(props: Props) {
     <>
       <Head>
         <title>{props.pokemon.name}</title>
+
+        <meta name="Single product page" content="View single product by id" />
       </Head>
       <Layout items={amountInCart}>
         <div css={centerCardStyles}>
@@ -270,16 +270,16 @@ export default function SingleProduct(props: Props) {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const likedPokemonsOnCookies = context.req.cookies.likedPokemons || '[]';
+  const cartOnCookies = context.req.cookies.cart || '[]';
 
-  const likedPokemons = JSON.parse(likedPokemonsOnCookies);
+  const cart = JSON.parse(cartOnCookies);
   const pokemonId = context.query.pokemonId;
 
   // Only get single pokemon with id from db and store it in variable pokemon
   const pokemon = await getSinglePokemon(pokemonId);
   return {
     props: {
-      likedPokemons: likedPokemons,
+      cart: cart,
       pokemon: pokemon,
     },
   };
