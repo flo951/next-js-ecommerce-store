@@ -1,4 +1,4 @@
-### Next.js Ecommerce Store
+# Next.js Ecommerce Store
 
 In this Ecommerce store you can buy Pokemon cards. You can pick the products you want to order, add them to your cart and fill out an order form to finish the process.
 
