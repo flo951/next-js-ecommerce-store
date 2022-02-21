@@ -29,10 +29,6 @@ const formStyles = css`
   border-radius: 8px;
 `;
 
-const layoutStyles = css`
-  margin: 1rem 1rem;
-  border-radius: 8px;
-`;
 const containerCreditCardStyles = css`
   display: flex;
   flex-direction: column;
@@ -89,16 +85,17 @@ export default function Checkout(props) {
       const sum = pricePokemon.reduce((partialSum, a) => partialSum + a, 0);
 
       setAmountInCart(sum);
+      console.log(amountInCart);
     };
 
     getAmount();
-  }, []);
+  }, [props.cart, amountInCart]);
 
   const deleteCookie = (e) => {
     e.preventDefault();
     Cookies.remove('cart');
     // use next router to redirect after submitting form
-    Router.push('./thanks').catch();
+    Router.push('./thanks').catch((error) => console.log(error));
   };
 
   console.log(props);

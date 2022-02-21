@@ -112,7 +112,7 @@ export default function SingleProduct(props: Props) {
     };
 
     getAmount();
-  }, []);
+  }, [props.cart]);
 
   const handleIncrementAmount = () => {
     setAmount(amount + 1);
