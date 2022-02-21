@@ -1,34 +1,53 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+### Next.js Ecommerce Store
 
-## Getting Started
+In this Ecommerce store you can buy Pokemon cards. You can pick the products you want to order, add them to your cart and fill out an order form to finish the process.
 
-First, run the development server:
+## Dependencies
 
-```bash
-npm run dev
-# or
+Next
+Typescript
+PostgreSQL
+Postgres.js
+@emotion/css
+JS Cookie
+dotenv-safe
+ley
+
+## Setup
+
+Clone the repo from GitHub and then install the dependencies:
+
+git clone https://github.com/flo951/next-js-ecommerce-store
+cd next-js-ecommerce-store
+yarn
+
+Setup a database with postgres on your computer:
+
+psql <login>
+CREATE DATABASE <database name>;
+CREATE USER <username> WITH ENCRYPTED PASSWORD '<pw>';
+GRANT ALL PRIVILEGES ON DATABASE <database name> TO <user name>;
+Create a .env file with the userinfo for the database and create .env.example as a template file for userinfo
+
+Use migrations:
+
+yarn migrate up
+
+To delete data from database run:
+yarn migrate down
+
+To run the development server:
+
 yarn dev
-```
-
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+To create the production build of the project run:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+yarn build
+yarn start
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Deployment
 
-## Learn More
+To deploy this project, create a Heroku Account and follow the instructions
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Project Preview
