@@ -94,7 +94,6 @@ type Props = {
 };
 
 export default function SingleProduct(props: Props) {
-  const [likedArray, setLikedArray] = useState<object>(props.cart);
   const [amount, setAmount] = useState(1);
   const [amountInCart, setAmountInCart] = useState<Number>();
   const [minAmount, setMinAmount] = useState('');
@@ -177,7 +176,6 @@ export default function SingleProduct(props: Props) {
           (cookieObject.id === id && cookieObject.amount === newAmount),
       );
 
-      setLikedArray(cookieUpdated);
       Cookies.set('cart', JSON.stringify(cookieUpdated));
 
       const pricePokemon = cookieUpdated.map((pokemon) => {
@@ -197,8 +195,7 @@ export default function SingleProduct(props: Props) {
           name: props.pokemon.name,
         },
       ];
-      // 3. set the new value of the cookie
-      setLikedArray(newCookie);
+
       Cookies.set('cart', JSON.stringify(newCookie));
 
       const pricePokemon = newCookie.map((pokemon) => {
