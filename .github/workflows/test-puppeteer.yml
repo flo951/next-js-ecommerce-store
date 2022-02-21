@@ -1,3 +1,6 @@
+name: Puppeteer tests
+on: push
+
 jobs:
   build:
     name: Puppeteer tests
