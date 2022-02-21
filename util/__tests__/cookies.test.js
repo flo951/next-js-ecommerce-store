@@ -3,7 +3,7 @@ import {
   updateAmount,
   getAmount,
   handleDeleteCookie,
-} from '../cookieFunctions.js';
+} from './cookieFunctions.js';
 
 const pokemons = [
   { id: 1, amount: 2, name: 'Glumanda' },

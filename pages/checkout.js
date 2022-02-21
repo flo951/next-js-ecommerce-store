@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import { getPokemons } from '../util/database';
 import Cookies from 'js-cookie';
-import { handleDeleteCookie } from './products/cookieFunctions';
+import { handleDeleteCookie } from '../util/__tests__/cookieFunctions';
 import Router from 'next/router';
 
 const formContainerStyles = css`
