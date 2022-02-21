@@ -74,8 +74,6 @@ const checkoutStyles = css`
 export default function Cart(props) {
   const [pokemonsInCart, setPokemonsInCart] = useState(props.cart);
   const [newPrice, setNewPrice] = useState(0);
-  const [newAmountSum, setNewAmountSum] = useState(0);
-
   const [amount, setAmount] = useState(0);
   console.log(props);
   useEffect(() => {
@@ -102,7 +100,7 @@ export default function Cart(props) {
     };
 
     getAmount();
-  }, []);
+  }, [props]);
 
   // let priceSum = 0;
   // props.likedPokemons.forEach(function (element) {
@@ -190,7 +188,9 @@ export default function Cart(props) {
             </h2>
 
             <button
-              onClick={() => Router.push('./checkout')}
+              onClick={() =>
+                Router.push('./checkout').catch((error) => console.log(error))
+              }
               css={addButtonStyles}
               data-test-id="cart-checkout"
             >

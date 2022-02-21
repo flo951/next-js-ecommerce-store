@@ -55,7 +55,6 @@ const imageStyles = css`
 `;
 
 type Props = {
-  //items: number;
   pokemonsInDb: Pokemon[];
   cart: Pokemon[];
 };
@@ -75,7 +74,7 @@ export default function Home(props: Props) {
     };
 
     getAmount();
-  }, []);
+  }, [props]);
 
   console.log(props);
   return (

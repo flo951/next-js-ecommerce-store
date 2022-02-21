@@ -1,8 +1,5 @@
 import Link from 'next/link';
 import { css } from '@emotion/react';
-import { GetServerSidePropsContext } from 'next';
-import { useEffect, useState } from 'react';
-import { Pokemon } from '../pages/products/[pokemonId]';
 
 const headerStyles = css`
   padding: 20px 20px;
@@ -49,9 +46,6 @@ const flexContainerStyles = css`
 
 type Props = {
   items: any;
-  // pokemon: Pokemon;
-  // likedPokemons: Pokemon[];
-  // setAmountInCart: any;
 };
 
 export default function Header(props: Props) {
@@ -72,15 +66,3 @@ export default function Header(props: Props) {
     </header>
   );
 }
-
-// export async function getServerSideProps(context: GetServerSidePropsContext) {
-//   const likedPokemonsOnCookies = context.req.cookies.likedPokemons || '[]';
-
-//   const likedPokemons = await JSON.parse(likedPokemonsOnCookies);
-
-//   return {
-//     props: {
-//       likedPokemons: likedPokemons,
-//     },
-//   };
-// }

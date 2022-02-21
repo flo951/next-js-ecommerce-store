@@ -18,7 +18,7 @@ const centerHeadingStyles = css`
 export default function Thanks() {
   useEffect(() => {
     setTimeout(() => {
-      Router.push('/');
+      Router.push('/').catch((error) => console.log(error));
     }, 3000);
   });
 
