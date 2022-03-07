@@ -45,7 +45,7 @@ const flexContainerStyles = css`
 `;
 
 type Props = {
-  items: any;
+  items: number | undefined;
 };
 
 export default function Header(props: Props) {

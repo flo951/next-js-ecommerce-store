@@ -27,7 +27,7 @@ export default function Thanks() {
       <Head>
         <title>Thank you for your order</title>
 
-        <meta name="Thank you page" content="Thank you message" />
+        <meta name="description" content="Thank you message" />
       </Head>
       <div css={centerHeadingStyles}>
         <h1 css={headingStyles}>Thank you for your order</h1>

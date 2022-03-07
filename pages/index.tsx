@@ -81,7 +81,7 @@ export default function Home(props: Props) {
     <>
       <Head>
         <title>Products</title>
-        <meta name="Products Page" content="Pokemon cards to buy" />
+        <meta name="description" content="Products Home Page, see which Pokemon cards you canbuy" />
       </Head>
       <Layout items={amountInCart}>
         <div css={centerHeadingStyles}>

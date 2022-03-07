@@ -100,7 +100,7 @@ export default function Cart(props) {
     };
 
     getAmount();
-  }, [props]);
+  }, [pokemonsInCart, props]);
 
   // let priceSum = 0;
   // props.likedPokemons.forEach(function (element) {
@@ -142,7 +142,10 @@ export default function Cart(props) {
     <>
       <Head>
         <title>Cart</title>
-        <meta name="Cart" content="Products in cart" />
+        <meta
+          name="description"
+          content="This is the Cart page, see your Products in the cart"
+        />
       </Head>
       <Layout items={amount}>
         <div css={containerStyles}>

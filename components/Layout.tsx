@@ -6,7 +6,7 @@ import Header from './Header';
 const bodyStyles = css``;
 // test
 type Props = {
-  items: any;
+  items: number | undefined;
   children: object;
   // setAmountInCart: any;
   // pokemon: Pokemon;

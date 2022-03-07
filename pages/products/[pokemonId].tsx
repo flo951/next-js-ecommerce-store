@@ -95,7 +95,7 @@ type Props = {
 
 export default function SingleProduct(props: Props) {
   const [amount, setAmount] = useState(1);
-  const [amountInCart, setAmountInCart] = useState<Number>();
+  const [amountInCart, setAmountInCart] = useState<number>();
   const [minAmount, setMinAmount] = useState('');
   const [addedToCart, setAddedToCart] = useState('');
 
@@ -208,12 +208,19 @@ export default function SingleProduct(props: Props) {
     }
   }
 
+  // function addToCookie(id) {
+  //   handleAddToCookie(id, amount);
+  // }
+
   return (
     <>
       <Head>
         <title>{props.pokemon.name}</title>
 
-        <meta name="Single product page" content="View single product by id" />
+        <meta
+          name="description"
+          content="Single product page, View single product by id"
+        />
       </Head>
       <Layout items={amountInCart}>
         <div css={centerCardStyles}>
@@ -224,7 +231,7 @@ export default function SingleProduct(props: Props) {
             <Image
               css={imageStyles}
               src={`/pokemon-images/${props.pokemon.id}.jpeg`}
-              alt={props.pokemon.name}
+              alt={`Picture of ${props.pokemon.name}`}
               width="250"
               height="250"
             />

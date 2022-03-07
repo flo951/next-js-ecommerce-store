@@ -55,7 +55,7 @@ const nameInputStyles = css`
   border: none;
   border-radius: 4px;
 `;
-const userNameInfoStyles = css``;
+
 const inputSubmitStyles = css`
   margin-top: 48px;
   padding: 16px 8px;
@@ -104,13 +104,13 @@ export default function Checkout(props) {
     <>
       <Head>
         <title>Checkout</title>
-        <meta name="Checkout" content="Form to complete payment process" />
+        <meta name="description" content="Form to complete payment process" />
       </Head>
       <Layout>
         <div css={formContainerStyles}>
           <h1>Checkout</h1>
           <form css={formStyles} id="survey-form" onSubmit={deleteCookie}>
-            <div css={userNameInfoStyles}>
+            <div>
               <label htmlFor="first-name">
                 <h4> First Name </h4>
               </label>
