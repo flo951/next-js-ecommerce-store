@@ -101,16 +101,6 @@ export default function Cart(props) {
     getAmount();
   }, [pokemonsInCart, props]);
 
-  // let priceSum = 0;
-  // props.likedPokemons.forEach(function (element) {
-  //   priceSum += props.pokemonsInDb[element.id - 1].price * element.amount;
-  // });
-
-  // let amountSum = 0;
-  // props.likedPokemons.forEach(function (element) {
-  //   amountSum += element.amount;
-  // });
-
   function handleDeleteProductInCookie(id) {
     // filter products with different id than product to delete and return them
     const newCookie = pokemonsInCart.filter((cookieObject) => {
@@ -123,7 +113,6 @@ export default function Cart(props) {
     const amountPokemon = newCookie.map((pokemon) => {
       return pokemon.amount;
     });
-    console.log(amountPokemon);
 
     const sum = amountPokemon.reduce((partialSum, a) => partialSum + a, 0);
     setAmount(sum);

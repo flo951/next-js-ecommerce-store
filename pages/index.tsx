@@ -76,12 +76,14 @@ export default function Home(props: Props) {
     getAmount();
   }, [props]);
 
-  console.log(props);
   return (
     <>
       <Head>
         <title>Products</title>
-        <meta name="description" content="Products Home Page, see which Pokemon cards you canbuy" />
+        <meta
+          name="description"
+          content="Products Home Page, see which Pokemon cards you canbuy"
+        />
       </Head>
       <Layout items={amountInCart}>
         <div css={centerHeadingStyles}>

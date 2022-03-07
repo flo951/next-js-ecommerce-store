@@ -101,7 +101,6 @@ export default function SingleProduct(props: Props) {
 
   useEffect(() => {
     const getAmount = () => {
-      console.log(props.cart);
       const pricePokemon = props.cart.map((pokemon) => {
         return pokemon.amount;
       });
@@ -207,10 +206,6 @@ export default function SingleProduct(props: Props) {
       setAmountInCart(sum);
     }
   }
-
-  // function addToCookie(id) {
-  //   handleAddToCookie(id, amount);
-  // }
 
   return (
     <>
