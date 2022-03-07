@@ -75,11 +75,10 @@ export default function Cart(props) {
   const [pokemonsInCart, setPokemonsInCart] = useState(props.cart);
   const [newPrice, setNewPrice] = useState(0);
   const [amount, setAmount] = useState(0);
-  console.log(props);
+
   useEffect(() => {
     const getAmount = () => {
-      console.log(props.cart);
-      const amountPokemon = props.cart.map((pokemon) => {
+      const amountPokemon = pokemonsInCart.map((pokemon) => {
         return pokemon.amount;
       });
 
@@ -95,7 +94,7 @@ export default function Cart(props) {
         (partialSum, a) => partialSum + a,
         0,
       );
-      console.log(sumPrice);
+
       setNewPrice(sumPrice);
     };
 
@@ -147,7 +146,7 @@ export default function Cart(props) {
           content="This is the Cart page, see your Products in the cart"
         />
       </Head>
-      <Layout items={props.items}>
+      <Layout items={amount}>
         <div css={containerStyles}>
           <div css={itemsInCartStyles} data-test-id="cart-product-product id">
             {pokemonsInCart.map((pokemon) => {
