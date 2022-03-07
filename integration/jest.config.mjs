@@ -1,7 +1,7 @@
 const config = {
   // testEnvironment: 'jsdom',
   preset: 'jest-puppeteer',
-  maxWorkes: 2,
+  maxWorkers: 2,
 };
 
 export default config;

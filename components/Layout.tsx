@@ -7,6 +7,7 @@ const bodyStyles = css``;
 // test
 type Props = {
   items: number | undefined;
+
   children: object;
   // setAmountInCart: any;
   // pokemon: Pokemon;

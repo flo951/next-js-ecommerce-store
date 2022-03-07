@@ -112,7 +112,7 @@ export default function Cart(props) {
   //   amountSum += element.amount;
   // });
 
-  function handleDeleteCookie(id) {
+  function handleDeleteProductInCookie(id) {
     // filter products with different id than product to delete and return them
     const newCookie = pokemonsInCart.filter((cookieObject) => {
       return cookieObject.id !== id;
@@ -134,7 +134,7 @@ export default function Cart(props) {
     });
 
     const sumPrice = pricePokemon.reduce((partialSum, a) => partialSum + a, 0);
-    console.log(sumPrice);
+
     setNewPrice(sumPrice);
   }
 
@@ -147,7 +147,7 @@ export default function Cart(props) {
           content="This is the Cart page, see your Products in the cart"
         />
       </Head>
-      <Layout items={amount}>
+      <Layout items={props.items}>
         <div css={containerStyles}>
           <div css={itemsInCartStyles} data-test-id="cart-product-product id">
             {pokemonsInCart.map((pokemon) => {
@@ -164,7 +164,7 @@ export default function Cart(props) {
 
                   <h3>
                     {pokemon.amount < 0
-                      ? handleDeleteCookie(pokemon.id)
+                      ? handleDeleteProductInCookie(pokemon.id)
                       : props.pokemonsInDb[pokemon.id - 1].price *
                         pokemon.amount}{' '}
                     €
@@ -175,7 +175,7 @@ export default function Cart(props) {
                   <button
                     css={counterButtonStyles}
                     onClick={() => {
-                      handleDeleteCookie(pokemon.id);
+                      handleDeleteProductInCookie(pokemon.id);
                     }}
                     data-test-id={`cart-product-remove-${pokemon.id}`}
                   >
