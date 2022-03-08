@@ -231,7 +231,8 @@ export default function SingleProduct(props: Props) {
               height="250"
             />
 
-            <h3> {props.pokemon.price} €</h3>
+            <h3 data-test-id="product-price"> {props.pokemon.price} </h3>
+            <span>€</span>
             <div css={counterDivStyles}>
               <p>{minAmount}</p>
               <div>
@@ -243,7 +244,9 @@ export default function SingleProduct(props: Props) {
                 >
                   -
                 </button>
-                <span css={spanStyles}>{amount}</span>
+                <span css={spanStyles} data-test-id="product-quantity">
+                  {amount}
+                </span>
                 <button
                   css={counterButtonStyles}
                   onClick={() => {

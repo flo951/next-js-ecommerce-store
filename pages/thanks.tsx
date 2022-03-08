@@ -3,6 +3,7 @@ import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Router from 'next/router';
 import { useEffect } from 'react';
+import Layout from '../components/Layout';
 
 import { getPokemons } from '../util/database';
 
@@ -29,9 +30,11 @@ export default function Thanks() {
 
         <meta name="description" content="Thank you message" />
       </Head>
-      <div css={centerHeadingStyles}>
-        <h1 css={headingStyles}>Thank you for your order</h1>
-      </div>
+      <Layout items={0}>
+        <div css={centerHeadingStyles}>
+          <h1 css={headingStyles}>Thank you for your order</h1>
+        </div>
+      </Layout>
     </>
   );
 }

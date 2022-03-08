@@ -106,7 +106,7 @@ export default function Checkout(props) {
         <title>Checkout</title>
         <meta name="description" content="Form to complete payment process" />
       </Head>
-      <Layout>
+      <Layout items={amountInCart}>
         <div css={formContainerStyles}>
           <h1>Checkout</h1>
           <form css={formStyles} id="survey-form" onSubmit={deleteCookie}>
@@ -174,11 +174,10 @@ export default function Checkout(props) {
                 name="postal-code"
                 data-test-id="checkout-postal-code"
                 placeholder="Postal Code"
+                type="number"
                 required
               />
 
-              {/* <label for="cheese">Do you like cheese?</label>
-              <input type="checkbox" name="cheese" id="cheese"> */}
               <label>
                 <h4>Country</h4>
                 <input
@@ -215,6 +214,7 @@ export default function Checkout(props) {
                 <input
                   css={smallInputStyles}
                   data-test-id="checkout-security-code"
+                  type="number"
                   placeholder="CVC"
                   required
                 />

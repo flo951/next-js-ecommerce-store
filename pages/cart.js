@@ -137,10 +137,14 @@ export default function Cart(props) {
       </Head>
       <Layout items={amount}>
         <div css={containerStyles}>
-          <div css={itemsInCartStyles} data-test-id="cart-product-product id">
+          <div css={itemsInCartStyles}>
             {pokemonsInCart.map((pokemon) => {
               return (
-                <div css={miniCardStyles} key={`pokemon-${pokemon.id}`}>
+                <div
+                  css={miniCardStyles}
+                  key={`pokemon-${pokemon.id}`}
+                  data-test-id={`cart-product-${pokemon.id}`}
+                >
                   <h1>{pokemon.name}</h1>
                   <Image
                     css={imageStyles}
