@@ -1,8 +1,6 @@
 import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
-import Router from 'next/router';
-import { useEffect } from 'react';
 import Layout from '../components/Layout';
 
 import { getPokemons } from '../util/database';
