@@ -178,10 +178,11 @@ export default function Cart(props) {
             })}
           </div>
           <div css={checkoutStyles}>
-            <h2 data-test-id="cart-total">
-              Total: {newPrice}€ for {amount} {amount > 1 ? 'Cards' : 'Card'}
-            </h2>
-
+            <div>
+              <span>Total: {newPrice}€ for </span>
+              <span data-test-id="cart-total">{amount} </span>
+              <span>{amount > 1 ? 'Cards' : 'Card'}</span>
+            </div>
             <button
               onClick={() =>
                 Router.push('./checkout').catch((error) => console.log(error))
