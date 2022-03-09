@@ -78,6 +78,11 @@ const addButtonStyles = css`
 const spanStyles = css`
   margin: 2px 8px;
 `;
+const priceStyles = css`
+  display: flex;
+
+  align-items: center;
+`;
 
 export type Pokemon = {
   id: number;
@@ -230,9 +235,10 @@ export default function SingleProduct(props: Props) {
               width="250"
               height="250"
             />
-
-            <h3 data-test-id="product-price"> {props.pokemon.price} </h3>
-            <span>€</span>
+            <div css={priceStyles}>
+              <h3 data-test-id="product-price"> {props.pokemon.price} </h3>
+              <span> €</span>
+            </div>
             <div css={counterDivStyles}>
               <p>{minAmount}</p>
               <div>
