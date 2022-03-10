@@ -179,8 +179,9 @@ export default function Cart(props) {
           </div>
           <div css={checkoutStyles}>
             <div>
-              <span>Total: {newPrice}€ for </span>
-              <span data-test-id="cart-total">{amount} </span>
+              <span>Total: </span>
+              <span data-test-id="cart-total">{newPrice}</span>
+              <span> € {amount} </span>
               <span>{amount > 1 ? 'Cards' : 'Card'}</span>
             </div>
             <button
