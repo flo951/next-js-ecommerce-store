@@ -98,11 +98,8 @@ export default function Home(props: Props) {
                   href={`/products/${product.id}`}
                   key={'pokemon-' + product.id}
                 >
-                  <a>
-                    <div
-                      data-test-id={`product-${product.id}`}
-                      css={pokemonCardStyles}
-                    >
+                  <a data-test-id={`product-${product.id}`}>
+                    <div css={pokemonCardStyles}>
                       <h2>{product.name}</h2>
 
                       <Image
