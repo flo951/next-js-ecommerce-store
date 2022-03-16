@@ -87,32 +87,29 @@ export default function Home(props: Props) {
       </Head>
       <Layout items={amountInCart}>
         <div css={centerHeadingStyles}>
-          {' '}
           <h1>Available Pokemon Cards</h1>
         </div>
         <div css={containerStyles}>
           {props.pokemonsInDb.map((product) => {
             return (
-              <div key={product.id}>
-                <Link
-                  href={`/products/${product.id}`}
-                  key={'pokemon-' + product.id}
-                >
-                  <a data-test-id={`product-${product.id}`}>
-                    <div css={pokemonCardStyles}>
-                      <h2>{product.name}</h2>
+              <Link
+                href={`/products/${product.id}`}
+                key={'pokemon-' + product.id}
+              >
+                <a data-test-id={`product-${product.id}`}>
+                  <div css={pokemonCardStyles}>
+                    <h2>{product.name}</h2>
 
-                      <Image
-                        css={imageStyles}
-                        src={`/pokemon-images/${product.id}.jpeg`}
-                        height="200%"
-                        width="200%"
-                        alt={`Image of Pokemon ${product.name}`}
-                      />
-                    </div>
-                  </a>
-                </Link>
-              </div>
+                    <Image
+                      css={imageStyles}
+                      src={`/pokemon-images/${product.id}.jpeg`}
+                      height="200%"
+                      width="200%"
+                      alt={`Image of Pokemon ${product.name}`}
+                    />
+                  </div>
+                </a>
+              </Link>
             );
           })}
         </div>
