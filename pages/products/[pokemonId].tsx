@@ -232,6 +232,7 @@ export default function SingleProduct(props: Props) {
               css={imageStyles}
               src={`/pokemon-images/${props.pokemon.id}.jpeg`}
               alt={`Picture of ${props.pokemon.name}`}
+              data-test-id="product-image"
               width="250"
               height="250"
             />
