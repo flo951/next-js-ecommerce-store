@@ -138,6 +138,10 @@ export default function SingleProduct(props: Props) {
   };
 
   function handleAddToCookie(id: Number) {
+    if (amount === 0) {
+      setAddedToCart(`Not Possible to add 0 cards!`);
+      return;
+    }
     if (amount === 1) {
       setAddedToCart(`You added one card!`);
     } else {
