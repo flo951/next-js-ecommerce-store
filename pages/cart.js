@@ -161,9 +161,12 @@ export default function Cart(props) {
                         pokemon.amount}{' '}
                     €
                   </h3>
-
-                  <span> Amount: {pokemon.amount}</span>
-
+                  <div>
+                    <span>Amount: </span>
+                    <span data-test-id={`cart-product-quantity-${pokemon.id}`}>
+                      {pokemon.amount}
+                    </span>
+                  </div>
                   <button
                     css={counterButtonStyles}
                     onClick={() => {
