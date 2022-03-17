@@ -75,8 +75,14 @@ const addButtonStyles = css`
   }
 `;
 
-const spanStyles = css`
+const inputStyles = css`
   margin: 2px 8px;
+  padding: 4px;
+  border-radius: 8px;
+  height: 40px;
+  width: 40px;
+  font-size: 22px;
+  text-align: center;
 `;
 const priceStyles = css`
   display: flex;
@@ -251,9 +257,16 @@ export default function SingleProduct(props: Props) {
                 >
                   -
                 </button>
-                <span css={spanStyles} data-test-id="product-quantity">
-                  {amount}
-                </span>
+                <input
+                  value={amount}
+                  min="1"
+                  type="number"
+                  css={inputStyles}
+                  data-test-id="product-quantity"
+                  onChange={(e) => {
+                    setAmount(parseInt(e.currentTarget.value));
+                  }}
+                />
                 <button
                   css={counterButtonStyles}
                   onClick={() => {
