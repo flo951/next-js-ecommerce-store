@@ -100,8 +100,6 @@ export type Pokemon = {
 type Props = {
   pokemon: Pokemon;
   cart: Pokemon[];
-  // amountInCart: any;
-  // items: any;
 };
 
 export default function SingleProduct(props: Props) {
