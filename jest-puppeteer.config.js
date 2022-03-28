@@ -4,6 +4,7 @@ module.exports = {
   },
   // browserContext: 'default',
   server: {
+    // starts production server
     command: 'yarn start',
   },
 };
