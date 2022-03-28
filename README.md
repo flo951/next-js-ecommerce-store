@@ -4,14 +4,14 @@ In this Ecommerce store you can buy Pokemon cards. You can pick the products you
 
 ## Dependencies
 
-Next
-Typescript
-PostgreSQL
-Postgres.js
-@emotion/css
-JS Cookie
-dotenv-safe
-ley
+- Next.js
+- Typescript
+- PostgreSQL
+- Postgres.js
+- @emotion/css
+- JS Cookie
+- dotenv-safe
+- ley
 
 ## Setup
 
@@ -55,7 +55,7 @@ To deploy this project, create a [Heroku Account](https://signup.heroku.com/) an
 
 ## Project Preview
 
-<img src="/public/images/expamplepic1.png" width="627" height="226">
+<img src="/public/images/examplepic1.png" width="627" height="226">
 <img src="/public/images/examplepic2.png" width="627" height="226">
 <img src="/public/images/examplepic4.png" width="627" height="226">
 <img src="/public/images/examplepic3.png" width="627" height="226">
