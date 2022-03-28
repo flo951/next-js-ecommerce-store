@@ -57,6 +57,7 @@ To deploy this project, create a [Heroku Account](https://signup.heroku.com/) an
 
 <img src="/public/images/expamplepic1.png" width="627" height="226">
 <img src="/public/images/examplepic2.png" width="627" height="226">
+<img src="/public/images/examplepic4.png" width="627" height="226">
 <img src="/public/images/examplepic3.png" width="627" height="226">
 
 
