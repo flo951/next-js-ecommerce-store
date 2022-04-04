@@ -135,7 +135,7 @@ export default function SingleProduct(props: Props) {
     setAmount(amount - 1);
   };
 
-  function handleAddToCookie(id: Number) {
+  function handleAddToCookie(id: number) {
     if (amount === 0) {
       setAddedToCart(`Not Possible to add 0 cards!`);
       return;
@@ -148,15 +148,15 @@ export default function SingleProduct(props: Props) {
 
     const cookieValue: Array = JSON.parse(Cookies.get('cart') || '[]');
 
-    type Object = {
+    type CookieObject = {
       id: number;
     };
 
-    const existOnArray = cookieValue.some((cookieObject: Object) => {
+    const existOnArray = cookieValue.some((cookieObject: CookieObject) => {
       return cookieObject.id === id;
     });
 
-    const pokemonInCart = cookieValue.find((cookieObject: Object) => {
+    const pokemonInCart = cookieValue.find((cookieObject: CookieObject) => {
       return cookieObject.id === id;
     });
     type Array = [
