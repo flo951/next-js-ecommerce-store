@@ -59,7 +59,7 @@ const counterButtonStyles = css`
     transition: ease-out 0.3s;
   }
 `;
-const addButtonStyles = css`
+export const addButtonStyles = css`
   margin-top: 8px;
   padding: 16px 8px;
   background-color: #787878;
@@ -75,7 +75,7 @@ const addButtonStyles = css`
   }
 `;
 
-const inputStyles = css`
+export const inputStyles = css`
   margin: 2px 8px;
   padding: 4px;
   border-radius: 8px;

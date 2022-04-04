@@ -49,6 +49,28 @@ const centerHeadingStyles = css`
     color: white;
   }
 `;
+const formStyles = css`
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 20px;
+`;
+const buttonStyles = css`
+  padding: 4px 8px;
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #787878;
+  color: white;
+  border-radius: 6px;
+  border: 2px solid black;
+`;
+const inputSearchStyles = css`
+  padding: 4px 8px;
+  font-size: 20px;
+`;
+const spanStyles = css`
+  color: white;
+`;
 
 const imageStyles = css`
   border-radius: 8px;
@@ -61,6 +83,9 @@ type Props = {
 
 export default function Home(props: Props) {
   const [amountInCart, setAmountInCart] = useState<number>();
+  const [pokemonList, setPokemonList] = useState(props.pokemonsInDb);
+  const [searchBar, setSearchBar] = useState('');
+  const [messageNotFound, setMessageNotFound] = useState('');
 
   useEffect(() => {
     const getAmount = () => {
@@ -76,6 +101,17 @@ export default function Home(props: Props) {
     getAmount();
   }, [props]);
 
+  const handleChange = () => {
+    setPokemonList(props.pokemonsInDb);
+    setMessageNotFound('');
+    const newPokemonList = props.pokemonsInDb.filter((pokemon) => {
+      return searchBar === pokemon.name;
+    });
+
+    newPokemonList.length !== 0
+      ? setPokemonList(newPokemonList)
+      : setMessageNotFound('No Matching Pokemon found');
+  };
   return (
     <>
       <Head>
@@ -89,8 +125,28 @@ export default function Home(props: Props) {
         <div css={centerHeadingStyles}>
           <h1>Available Pokemon Cards</h1>
         </div>
+        <div>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleChange();
+            }}
+            css={formStyles}
+          >
+            <input
+              css={inputSearchStyles}
+              value={searchBar}
+              onChange={(e) => {
+                setSearchBar(e.currentTarget.value);
+              }}
+            />
+            <input css={buttonStyles} type="submit" value="Search" />
+
+            <span css={spanStyles}>{messageNotFound}</span>
+          </form>
+        </div>
         <div css={containerStyles}>
-          {props.pokemonsInDb.map((product) => {
+          {pokemonList.map((product) => {
             return (
               <Link
                 href={`/products/${product.id}`}
