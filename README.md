@@ -55,10 +55,10 @@ To deploy this project, create a [Heroku Account](https://signup.heroku.com/) an
 
 ## Project Preview
 
-<img src="/public/images/examplepic1.png" width="627" height="226">
-<img src="/public/images/examplepic2.png" width="627" height="226">
-<img src="/public/images/examplepic4.png" width="627" height="226">
-<img src="/public/images/examplepic3.png" width="627" height="226">
+<img src="/public/images/examplepic1.png" width="827" height="452">
+<img src="/public/images/examplepic2.png" width="827" height="452">
+<img src="/public/images/examplepic4.png" width="827" height="452">
+<img src="/public/images/examplepic3.png" width="827" height="452">
 
 
 
