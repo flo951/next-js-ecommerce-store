@@ -52,6 +52,12 @@ export default function Header(props: Props) {
   return (
     <header css={headerStyles}>
       <Link href="/">
+        <a data-test-id="products-link">Login</a>
+      </Link>
+      <Link href="/">
+        <a data-test-id="products-link">Registration</a>
+      </Link>
+      <Link href="/">
         <a data-test-id="products-link">Products</a>
       </Link>
       <div css={flexContainerStyles}>
