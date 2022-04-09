@@ -49,21 +49,15 @@ const centerHeadingStyles = css`
     color: white;
   }
 `;
-const formStyles = css`
+const searchBarStyles = css`
   display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 12px;
   justify-content: center;
   margin-bottom: 20px;
 `;
-const buttonStyles = css`
-  padding: 4px 8px;
-  font-size: 20px;
-  cursor: pointer;
-  background-color: #787878;
-  color: white;
-  border-radius: 6px;
-  border: 2px solid black;
-`;
+
 const inputSearchStyles = css`
   padding: 4px 8px;
   font-size: 20px;
@@ -101,49 +95,48 @@ export default function Home(props: Props) {
     getAmount();
   }, [props]);
 
-  const handleChange = () => {
+  const handleChange = (value: string) => {
+    const searchValue = value;
+    setSearchBar(searchValue);
     setPokemonList(props.pokemonsInDb);
     setMessageNotFound('');
+  };
+
+  useEffect(() => {
     const newPokemonList = props.pokemonsInDb.filter((pokemon) => {
       return searchBar === pokemon.name;
     });
 
-    newPokemonList.length !== 0
-      ? setPokemonList(newPokemonList)
-      : setMessageNotFound('No Matching Pokemon found');
-  };
+    newPokemonList.length !== 0 && setPokemonList(newPokemonList);
+    if (searchBar.length > 0 && newPokemonList.length === 0) {
+      setMessageNotFound('No matching Pokemon found');
+    }
+  }, [searchBar, props.pokemonsInDb]);
+
   return (
     <>
       <Head>
         <title>Products</title>
         <meta
           name="description"
-          content="Products Home Page, see which Pokemon cards you canbuy"
+          content="Products Home Page, see which Pokemon cards you can buy"
         />
       </Head>
       <Layout items={amountInCart}>
         <div css={centerHeadingStyles}>
           <h1>Available Pokemon Cards</h1>
         </div>
-        <div>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleChange();
+        <div css={searchBarStyles}>
+          <input
+            css={inputSearchStyles}
+            value={searchBar}
+            placeholder="Search"
+            onChange={(e) => {
+              handleChange(e.currentTarget.value);
             }}
-            css={formStyles}
-          >
-            <input
-              css={inputSearchStyles}
-              value={searchBar}
-              onChange={(e) => {
-                setSearchBar(e.currentTarget.value);
-              }}
-            />
-            <input css={buttonStyles} type="submit" value="Search" />
+          />
 
-            <span css={spanStyles}>{messageNotFound}</span>
-          </form>
+          <p css={spanStyles}>{messageNotFound}</p>
         </div>
         <div css={containerStyles}>
           {pokemonList.map((product) => {
