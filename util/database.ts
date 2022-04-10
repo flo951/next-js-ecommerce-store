@@ -1,6 +1,7 @@
 import postgres from 'postgres';
 import { config } from 'dotenv-safe';
 import setPostgresDefaultsOnHeroku from './setPostgresDefaultsOnHeroku.js';
+import { Pokemon } from '../pages/products/[pokemonId].jsx';
 
 setPostgresDefaultsOnHeroku();
 config();
@@ -31,7 +32,7 @@ function connectOneTimeToDatabase() {
 const sql = connectOneTimeToDatabase();
 
 export async function getPokemons() {
-  const pokemons = await sql`
+  const pokemons = await sql<Pokemon[]>`
 SELECT * FROM pokemons;
 
 
@@ -40,7 +41,7 @@ SELECT * FROM pokemons;
 }
 
 export async function getSinglePokemon(id: number) {
-  const [pokemon] = await sql`
+  const [pokemon] = await sql<[Pokemon]>`
 
   SELECT * FROM pokemons WHERE id = ${id};
 
