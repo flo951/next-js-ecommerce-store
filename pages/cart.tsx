@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { getPokemons } from '../util/database';
 import Layout from '../components/Layout';
 import Router from 'next/router';
+import { Pokemon } from './products/[pokemonId]';
+import { GetServerSidePropsContext } from 'next';
 
 const containerStyles = css`
   color: white;
@@ -71,14 +73,14 @@ const checkoutStyles = css`
   justify-content: center;
   align-items: center;
 `;
-export default function Cart(props) {
+export default function Cart(props: Props) {
   const [pokemonsInCart, setPokemonsInCart] = useState(props.cart);
   const [newPrice, setNewPrice] = useState(0);
   const [amount, setAmount] = useState(0);
 
   useEffect(() => {
     const getAmount = () => {
-      const amountPokemon = pokemonsInCart.map((pokemon) => {
+      const amountPokemon = pokemonsInCart.map((pokemon: Pokemon) => {
         return pokemon.amount;
       });
 
@@ -86,7 +88,7 @@ export default function Cart(props) {
 
       setAmount(sum);
 
-      const pricePokemon = pokemonsInCart.map((pokemon) => {
+      const pricePokemon = pokemonsInCart.map((pokemon: Pokemon) => {
         return props.pokemonsInDb[pokemon.id - 1].price * pokemon.amount;
       });
 
@@ -101,7 +103,7 @@ export default function Cart(props) {
     getAmount();
   }, [pokemonsInCart, props]);
 
-  function handleDeleteProductInCookie(id) {
+  function handleDeleteProductInCookie(id: number) {
     // filter products with different id than product to delete and return them
     const newCookie = pokemonsInCart.filter((cookieObject) => {
       return cookieObject.id !== id;
@@ -110,14 +112,14 @@ export default function Cart(props) {
     setPokemonsInCart(newCookie);
     Cookies.set('cart', JSON.stringify(newCookie));
 
-    const amountPokemon = newCookie.map((pokemon) => {
+    const amountPokemon = newCookie.map((pokemon: Pokemon) => {
       return pokemon.amount;
     });
 
     const sum = amountPokemon.reduce((partialSum, a) => partialSum + a, 0);
     setAmount(sum);
 
-    const pricePokemon = newCookie.map((pokemon) => {
+    const pricePokemon = newCookie.map((pokemon: Pokemon) => {
       return props.pokemonsInDb[pokemon.id - 1].price * pokemon.amount;
     });
 
@@ -138,7 +140,7 @@ export default function Cart(props) {
       <Layout items={amount}>
         <div css={containerStyles}>
           <div css={itemsInCartStyles}>
-            {pokemonsInCart.map((pokemon) => {
+            {pokemonsInCart.map((pokemon: Pokemon) => {
               return (
                 <div
                   css={miniCardStyles}
@@ -203,13 +205,14 @@ export default function Cart(props) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   // context allow to acces cookies
   // important, always return an object from getserversideprops and always return a key (props is the key)
 
   const cartOnCookies = context.req.cookies.cart || '[]';
 
-  const cart = JSON.parse(cartOnCookies);
+  const cart: Pokemon[] = JSON.parse(cartOnCookies);
+
   // // 1. get the cookies from the browser
 
   // 2. pass the cookies to the frontend
