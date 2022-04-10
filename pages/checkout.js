@@ -2,9 +2,9 @@ import { css } from '@emotion/react';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
-import { getPokemons } from '../util/database';
 import Cookies from 'js-cookie';
 import Router from 'next/router';
+import { getPokemons } from '../util/database';
 
 const formContainerStyles = css`
   display: flex;

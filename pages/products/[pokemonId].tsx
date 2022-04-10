@@ -93,7 +93,7 @@ const priceStyles = css`
 export type Pokemon = {
   id: number;
   name: string;
-  price?: number;
+  price: number;
   amount: number;
 };
 
@@ -297,10 +297,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const cartOnCookies = context.req.cookies.cart || '[]';
 
   const cart = JSON.parse(cartOnCookies);
-  const pokemonId = context.query.pokemonId;
+  const pokemonId = context.query.pokemonId as string;
+
+  if (typeof pokemonId === 'undefined') {
+    return;
+  }
 
   // Only get single pokemon with id from db and store it in variable pokemon
-  const pokemon = await getSinglePokemon(pokemonId);
+  const pokemon = await getSinglePokemon(parseInt(pokemonId));
   return {
     props: {
       cart: cart,

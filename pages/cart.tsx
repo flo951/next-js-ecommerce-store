@@ -3,11 +3,12 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
-import { getPokemons } from '../util/database';
 import Layout from '../components/Layout';
 import Router from 'next/router';
 import { Pokemon } from './products/[pokemonId]';
 import { GetServerSidePropsContext } from 'next';
+import { getPokemons } from '../util/database';
+import { Props } from '.';
 
 const containerStyles = css`
   color: white;
@@ -73,6 +74,7 @@ const checkoutStyles = css`
   justify-content: center;
   align-items: center;
 `;
+
 export default function Cart(props: Props) {
   const [pokemonsInCart, setPokemonsInCart] = useState(props.cart);
   const [newPrice, setNewPrice] = useState(0);
@@ -84,7 +86,10 @@ export default function Cart(props: Props) {
         return pokemon.amount;
       });
 
-      const sum = amountPokemon.reduce((partialSum, a) => partialSum + a, 0);
+      const sum = amountPokemon.reduce(
+        (partialSum: number, a: number) => partialSum + a,
+        0,
+      );
 
       setAmount(sum);
 
@@ -93,7 +98,7 @@ export default function Cart(props: Props) {
       });
 
       const sumPrice = pricePokemon.reduce(
-        (partialSum, a) => partialSum + a,
+        (partialSum: number, a: number) => partialSum + a,
         0,
       );
 
@@ -105,7 +110,7 @@ export default function Cart(props: Props) {
 
   function handleDeleteProductInCookie(id: number) {
     // filter products with different id than product to delete and return them
-    const newCookie = pokemonsInCart.filter((cookieObject) => {
+    const newCookie = pokemonsInCart.filter((cookieObject: Pokemon) => {
       return cookieObject.id !== id;
     });
 
@@ -116,14 +121,20 @@ export default function Cart(props: Props) {
       return pokemon.amount;
     });
 
-    const sum = amountPokemon.reduce((partialSum, a) => partialSum + a, 0);
+    const sum = amountPokemon.reduce(
+      (partialSum: number, a: number) => partialSum + a,
+      0,
+    );
     setAmount(sum);
 
     const pricePokemon = newCookie.map((pokemon: Pokemon) => {
       return props.pokemonsInDb[pokemon.id - 1].price * pokemon.amount;
     });
 
-    const sumPrice = pricePokemon.reduce((partialSum, a) => partialSum + a, 0);
+    const sumPrice = pricePokemon.reduce(
+      (partialSum: number, a: number) => partialSum + a,
+      0,
+    );
 
     setNewPrice(sumPrice);
   }

@@ -70,7 +70,7 @@ const imageStyles = css`
   border-radius: 8px;
 `;
 
-type Props = {
+export type Props = {
   pokemonsInDb: Pokemon[];
   cart: Pokemon[];
 };
