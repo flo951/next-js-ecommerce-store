@@ -6,6 +6,9 @@ const inputSearchStyles = css`
   padding: 4px 8px;
   font-size: 20px;
 `;
+const spanStyles = css`
+  color: white;
+`;
 
 type Props = {
   pokemonsInDb: Pokemon[];
@@ -43,7 +46,7 @@ export default function SearchBar({ pokemonsInDb, setPokemonList }: Props) {
           handleChangeSearchbar(e.currentTarget.value);
         }}
       />
-      <p>{messageNotFound}</p>
+      <p css={spanStyles}>{messageNotFound}</p>
     </div>
   );
 }

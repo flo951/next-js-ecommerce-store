@@ -59,14 +59,6 @@ const searchBarStyles = css`
   margin-bottom: 20px;
 `;
 
-const inputSearchStyles = css`
-  padding: 4px 8px;
-  font-size: 20px;
-`;
-const spanStyles = css`
-  color: white;
-`;
-
 const imageStyles = css`
   border-radius: 8px;
 `;
