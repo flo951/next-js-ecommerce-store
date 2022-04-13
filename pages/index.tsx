@@ -104,7 +104,7 @@ export default function Home(props: Props) {
 
   useEffect(() => {
     const newPokemonList = props.pokemonsInDb.filter((pokemon) => {
-      return searchBar === pokemon.name;
+      return pokemon.name.includes(searchBar);
     });
 
     newPokemonList.length !== 0 && setPokemonList(newPokemonList);
