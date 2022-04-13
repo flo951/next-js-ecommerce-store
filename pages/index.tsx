@@ -7,6 +7,7 @@ import { GetServerSidePropsContext } from 'next';
 import { Pokemon } from './products/[pokemonId]';
 import Layout from '../components/Layout';
 import { useEffect, useState } from 'react';
+import SearchBar from '../components/SearchBar';
 
 const containerStyles = css`
   display: flex;
@@ -78,8 +79,7 @@ export type Props = {
 export default function Home(props: Props) {
   const [amountInCart, setAmountInCart] = useState<number>();
   const [pokemonList, setPokemonList] = useState(props.pokemonsInDb);
-  const [searchBar, setSearchBar] = useState('');
-  const [messageNotFound, setMessageNotFound] = useState('');
+  // const [searchBar, setSearchBar] = useState('');
 
   useEffect(() => {
     const getAmount = () => {
@@ -95,23 +95,23 @@ export default function Home(props: Props) {
     getAmount();
   }, [props]);
 
-  const handleChangeSearchbar = (value: string) => {
-    const searchValue = value;
-    setSearchBar(searchValue);
-    setPokemonList(props.pokemonsInDb);
-    setMessageNotFound('');
-  };
+  // const handleChangeSearchbar = (value: string) => {
+  //   const searchValue = value;
+  //   setSearchBar(searchValue);
+  //   setPokemonList(props.pokemonsInDb);
+  //   setMessageNotFound('');
+  // };
 
-  useEffect(() => {
-    const newPokemonList = props.pokemonsInDb.filter((pokemon) => {
-      return pokemon.name.includes(searchBar);
-    });
+  // useEffect(() => {
+  //   const newPokemonList = props.pokemonsInDb.filter((pokemon) => {
+  //     return pokemon.name.includes(searchBar);
+  //   });
 
-    newPokemonList.length !== 0 && setPokemonList(newPokemonList);
-    if (searchBar.length > 0 && newPokemonList.length === 0) {
-      setMessageNotFound('No matching Pokemon found');
-    }
-  }, [searchBar, props.pokemonsInDb]);
+  //   newPokemonList.length !== 0 && setPokemonList(newPokemonList);
+  //   if (searchBar.length > 0 && newPokemonList.length === 0) {
+  //     setMessageNotFound('No matching Pokemon found');
+  //   }
+  // }, [searchBar, props.pokemonsInDb]);
 
   return (
     <>
@@ -127,16 +127,18 @@ export default function Home(props: Props) {
           <h1>Available Pokemon Cards</h1>
         </div>
         <div css={searchBarStyles}>
-          <input
+          {/* <input
             css={inputSearchStyles}
             value={searchBar}
             placeholder="Search"
             onChange={(e) => {
               handleChangeSearchbar(e.currentTarget.value);
             }}
+          /> */}
+          <SearchBar
+            pokemonsInDb={props.pokemonsInDb}
+            setPokemonList={setPokemonList}
           />
-
-          <p css={spanStyles}>{messageNotFound}</p>
         </div>
         <div css={containerStyles}>
           {pokemonList.map((product) => {
