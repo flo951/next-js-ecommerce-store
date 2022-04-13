@@ -27,7 +27,9 @@ export default function SearchBar({ pokemonsInDb, setPokemonList }: Props) {
 
   useEffect(() => {
     const newPokemonList = pokemonsInDb.filter((pokemon) => {
-      return pokemon.name.includes(searchBar);
+      const searchValue =
+        searchBar.charAt(0).toUpperCase() + searchBar.slice(1).toLowerCase();
+      return pokemon.name.includes(searchValue);
     });
 
     newPokemonList.length !== 0 && setPokemonList(newPokemonList);
