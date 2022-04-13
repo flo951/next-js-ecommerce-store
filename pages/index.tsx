@@ -95,7 +95,7 @@ export default function Home(props: Props) {
     getAmount();
   }, [props]);
 
-  const handleChange = (value: string) => {
+  const handleChangeSearchbar = (value: string) => {
     const searchValue = value;
     setSearchBar(searchValue);
     setPokemonList(props.pokemonsInDb);
@@ -132,7 +132,7 @@ export default function Home(props: Props) {
             value={searchBar}
             placeholder="Search"
             onChange={(e) => {
-              handleChange(e.currentTarget.value);
+              handleChangeSearchbar(e.currentTarget.value);
             }}
           />
 
