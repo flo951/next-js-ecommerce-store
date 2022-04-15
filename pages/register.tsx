@@ -21,11 +21,17 @@ export default function Register() {
             e.preventDefault();
             fetch('/api/register', {
               method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
               body: JSON.stringify({
                 username: username,
                 password: password,
               }),
             });
+
+            setUsername('');
+            setPassword('');
           }}
         >
           <input
@@ -36,8 +42,10 @@ export default function Register() {
           <input
             value={password}
             onChange={(e) => setPassword(e.currentTarget.value)}
+            type="password"
             placeholder="password"
           />
+          <input type="submit" />
         </form>
       </main>
     </div>
