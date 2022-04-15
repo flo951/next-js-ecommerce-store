@@ -1,7 +1,11 @@
 import Head from 'next/head';
+import { useState } from 'react';
 import Header from '../components/Header';
 
 export default function Register() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
   return (
     <div>
       <Head>
@@ -12,8 +16,29 @@ export default function Register() {
       <Header />
 
       <main>
-        <input placeholder="username" />
-        <input placeholder="password" />
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            fetch('/api/register', {
+              method: 'POST',
+              body: JSON.stringify({
+                username: username,
+                password: password,
+              }),
+            });
+          }}
+        >
+          <input
+            value={username}
+            onChange={(e) => setUsername(e.currentTarget.value)}
+            placeholder="username"
+          />
+          <input
+            value={password}
+            onChange={(e) => setPassword(e.currentTarget.value)}
+            placeholder="password"
+          />
+        </form>
       </main>
     </div>
   );
