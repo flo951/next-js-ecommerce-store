@@ -54,6 +54,12 @@ export default function Header(props: Props) {
       <Link href="/">
         <a data-test-id="products-link">Products</a>
       </Link>
+      <Link href="/register">
+        <a data-test-id="products-link">Register</a>
+      </Link>
+      <Link href="/login">
+        <a data-test-id="products-link">Login</a>
+      </Link>
       <div css={flexContainerStyles}>
         <Link href="/cart">
           <a data-test-id="cart-link">Cart</a>
