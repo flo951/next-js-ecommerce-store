@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { useState } from 'react';
 import Header from '../components/Header';
 
-export default function Register() {
+export default function Register(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -17,9 +17,9 @@ export default function Register() {
 
       <main>
         <form
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
-            fetch('/api/register', {
+            const registerResponse = fetch('/api/register', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -30,6 +30,7 @@ export default function Register() {
               }),
             });
 
+            props.refreshUserProfile();
             setUsername('');
             setPassword('');
           }}
