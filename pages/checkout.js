@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import Layout from '../components/Layout';
 import Cookies from 'js-cookie';
 import Router from 'next/router';
 import { getPokemons } from '../util/database';
@@ -41,7 +40,7 @@ const smallInputStyles = css`
   border: none;
   border-radius: 4px;
 `;
-const inputStyles = css`
+export const inputStyles = css`
   padding: 8px 8px;
 
   font-size: 16px;
@@ -57,7 +56,6 @@ const nameInputStyles = css`
 `;
 
 const inputSubmitStyles = css`
-  margin-top: 48px;
   padding: 16px 8px;
   background-color: #787878;
   color: white;
@@ -65,7 +63,7 @@ const inputSubmitStyles = css`
   border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
-
+  margin-top: 24px;
   :hover {
     transition: ease-out 0.3s;
     box-shadow: rgba(240, 46, 170, 0.4) 0px 5px,
@@ -106,137 +104,134 @@ export default function Checkout(props) {
         <title>Checkout</title>
         <meta name="description" content="Form to complete payment process" />
       </Head>
-      <Layout items={amountInCart}>
-        <div css={formContainerStyles}>
-          <h1>Checkout</h1>
-          <form css={formStyles} id="survey-form" onSubmit={deleteCookie}>
-            <div>
-              <label htmlFor="first-name">
-                <h4> First Name </h4>
-              </label>
-              <input
-                css={nameInputStyles}
-                data-test-id="checkout-first-name"
-                id="first-name"
-                name="first-name"
-                placeholder="First Name"
-                required
-              />
-              <label htmlFor="last-name">
-                <h4> Last Name </h4>
-              </label>
-              <input
-                css={nameInputStyles}
-                data-test-id="checkout-last-name"
-                id="last-name"
-                name="last-name"
-                placeholder="Last Name"
-                required
-              />
+      {/* <Layout items={amountInCart}> */}
+      <div css={formContainerStyles}>
+        <h1>Checkout</h1>
+        <form css={formStyles} id="survey-form" onSubmit={deleteCookie}>
+          <div>
+            <label htmlFor="first-name">
+              <h4> First Name </h4>
+            </label>
+            <input
+              css={nameInputStyles}
+              data-test-id="checkout-first-name"
+              id="first-name"
+              name="first-name"
+              placeholder="First Name"
+              required
+            />
+            <label htmlFor="last-name">
+              <h4> Last Name </h4>
+            </label>
+            <input
+              css={nameInputStyles}
+              data-test-id="checkout-last-name"
+              id="last-name"
+              name="last-name"
+              placeholder="Last Name"
+              required
+            />
 
-              <label htmlFor="e-mail">
-                <h4>E-Mail</h4>{' '}
-              </label>
-              <input
-                css={nameInputStyles}
-                type="email"
-                data-test-id="checkout-email"
-                placeholder="Enter your E-Mail"
-                required
-              />
-            </div>
-            <div>
-              <label>
-                <h4>Adress</h4>
-                <input
-                  css={inputStyles}
-                  type="adress"
-                  data-test-id="checkout-address"
-                  placeholder="Adress"
-                  required
-                />
-              </label>
-              <label>
-                <h4>City</h4>
-                <input
-                  css={inputStyles}
-                  data-test-id="checkout-city"
-                  placeholder="City"
-                  required
-                />
-              </label>
-              <label htmlFor="postal-code">
-                <h4>Postal Code</h4>
-              </label>
+            <label htmlFor="e-mail">
+              <h4>E-Mail</h4>{' '}
+            </label>
+            <input
+              css={nameInputStyles}
+              type="email"
+              data-test-id="checkout-email"
+              placeholder="Enter your E-Mail"
+              required
+            />
+          </div>
+          <div>
+            <label>
+              <h4>Adress</h4>
               <input
                 css={inputStyles}
-                id="postal-code"
-                name="postal-code"
-                data-test-id="checkout-postal-code"
-                placeholder="Postal Code"
-                type="number"
+                type="adress"
+                data-test-id="checkout-address"
+                placeholder="Adress"
                 required
               />
-
-              <label>
-                <h4>Country</h4>
-                <input
-                  css={inputStyles}
-                  data-test-id="checkout-country"
-                  placeholder="Country"
-                  required
-                />
-              </label>
-            </div>
-            <div css={containerCreditCardStyles}>
-              <label>
-                <h4>Creditcardnumber</h4>
-
-                <input
-                  css={inputStyles}
-                  data-test-id="checkout-credit-card"
-                  placeholder="1234-5678-9123-4567"
-                  required
-                />
-              </label>
-
-              <label>
-                <h4>Expiration date</h4>
-                <input
-                  css={smallInputStyles}
-                  data-test-id="checkout-expiration-date"
-                  placeholder="exp. date"
-                  required
-                />
-              </label>
-              <label>
-                <h4>Security Number</h4>
-                <input
-                  css={smallInputStyles}
-                  data-test-id="checkout-security-code"
-                  type="number"
-                  placeholder="CVC"
-                  required
-                />
-              </label>
+            </label>
+            <label>
+              <h4>City</h4>
               <input
-                css={inputSubmitStyles}
-                data-test-id="checkout-confirm-order"
-                type="submit"
-                value="complete order, really no scam"
+                css={inputStyles}
+                data-test-id="checkout-city"
+                placeholder="City"
+                required
               />
-            </div>
-          </form>
-        </div>
-      </Layout>
+            </label>
+            <label htmlFor="postal-code">
+              <h4>Postal Code</h4>
+            </label>
+            <input
+              css={inputStyles}
+              id="postal-code"
+              name="postal-code"
+              data-test-id="checkout-postal-code"
+              placeholder="Postal Code"
+              type="number"
+              required
+            />
+
+            <label>
+              <h4>Country</h4>
+              <input
+                css={inputStyles}
+                data-test-id="checkout-country"
+                placeholder="Country"
+                required
+              />
+            </label>
+          </div>
+          <div css={containerCreditCardStyles}>
+            <label>
+              <h4>Creditcardnumber</h4>
+
+              <input
+                css={inputStyles}
+                data-test-id="checkout-credit-card"
+                placeholder="1234-5678-9123-4567"
+                required
+              />
+            </label>
+
+            <label>
+              <h4>Expiration date</h4>
+              <input
+                css={smallInputStyles}
+                data-test-id="checkout-expiration-date"
+                placeholder="exp. date"
+                required
+              />
+            </label>
+            <label>
+              <h4>Security Number</h4>
+
+              <input
+                css={smallInputStyles}
+                data-test-id="checkout-security-code"
+                type="number"
+                placeholder="CVC"
+                required
+              />
+            </label>
+            <input
+              css={inputSubmitStyles}
+              data-test-id="checkout-confirm-order"
+              type="submit"
+              value="complete order, really no scam"
+            />
+          </div>
+        </form>
+      </div>
     </>
   );
 }
 
 export async function getServerSideProps(context) {
-  // context allow to acces cookies
-  // important, always return an object from getserversideprops and always return a key (props is the key)
-
   const cartOnCookies = context.req.cookies.cart || '[]';
 
   const cart = JSON.parse(cartOnCookies);
@@ -244,6 +239,7 @@ export async function getServerSideProps(context) {
 
   // 2. pass the cookies to the frontend
   const pokemonsInDb = await getPokemons();
+
   return {
     props: {
       cart: cart,
