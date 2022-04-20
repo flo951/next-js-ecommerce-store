@@ -1,12 +1,30 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { createUser, getUserByUsername } from '../../util/database';
+import {
+  createSession,
+  createUser,
+  getUserByUsername,
+} from '../../util/database';
 import bcrypt from 'bcrypt';
+import crypto from 'node:crypto';
+import { createSerializedRegisterSessionTokenCookie } from '../../util/cookie';
 
 export default async function registerHandler(
   request: NextApiRequest,
   response: NextApiResponse,
 ) {
   if (request.method === 'POST') {
+    if (
+      typeof request.body.username !== 'string' ||
+      !request.body.username ||
+      typeof request.body.password !== 'string' ||
+      !request.body.password
+    ) {
+      // 400 bad request
+      response.status(400).json({
+        errors: [{ message: 'Username or Password token not provided' }],
+      });
+      return;
+    }
     if (await getUserByUsername(request.body.username)) {
       response.status(409).json({
         errors: [
@@ -21,9 +39,17 @@ export default async function registerHandler(
 
     const newUser = await createUser(request.body.username, passwordHash);
 
-    console.log(newUser);
+    const token = crypto.randomBytes(64).toString('base64');
+    const session = await createSession(token, newUser.id);
 
-    response.status(201).json({ user: newUser });
+    const serializedCookie = await createSerializedRegisterSessionTokenCookie(
+      session.token,
+    );
+
+    response
+      .status(201)
+      .setHeader('Set-Cookie', serializedCookie)
+      .json({ user: newUser });
     return;
   }
 }
