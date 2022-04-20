@@ -22,11 +22,11 @@ export default function Thanks() {
 
         <meta name="description" content="Thank you message" />
       </Head>
-      <Layout items={0}>
-        <div css={centerHeadingStyles}>
-          <h1 css={headingStyles}>Thank you for your order</h1>
-        </div>
-      </Layout>
+      {/* <Layout items={0}> */}
+      <div css={centerHeadingStyles}>
+        <h1 css={headingStyles}>Thank you for your order</h1>
+      </div>
+      {/* </Layout> */}
     </>
   );
 }
