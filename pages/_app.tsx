@@ -5,7 +5,7 @@ import Layout from '../components/Layout';
 import { useRouter } from 'next/router';
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [user, setUser] = useState();
-  const [amountInCart, setAmountInCart] = useState<number>();
+  const [amountInCart, setAmountInCart] = useState<number>(0);
   const refreshUserProfile = useCallback(async () => {
     const response = await fetch('/api/profile');
     const data = await response.json();
