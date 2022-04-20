@@ -3,14 +3,27 @@ import {
   createSession,
   createUser,
   getUserByUsername,
+  User,
 } from '../../util/database';
 import bcrypt from 'bcrypt';
 import crypto from 'node:crypto';
 import { createSerializedRegisterSessionTokenCookie } from '../../util/cookie';
 
+type RegisterRequestBody = {
+  username: string;
+  password: string;
+};
+
+type RegisterNextApiRequest = Omit<NextApiRequest, 'body'> & {
+  body: RegisterRequestBody;
+};
+
+export type RegisterResponseBody =
+  | { errors: { message: string }[] }
+  | { user: User };
 export default async function registerHandler(
-  request: NextApiRequest,
-  response: NextApiResponse,
+  request: RegisterNextApiRequest,
+  response: NextApiResponse<RegisterResponseBody>,
 ) {
   if (request.method === 'POST') {
     if (
