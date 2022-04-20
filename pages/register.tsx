@@ -58,6 +58,7 @@ export default function Register(props: Props) {
             value={username}
             onChange={(e) => setUsername(e.currentTarget.value)}
             placeholder="username"
+            data-test-id="register-username"
             css={inputStyles}
           />
           <input
@@ -65,9 +66,15 @@ export default function Register(props: Props) {
             onChange={(e) => setPassword(e.currentTarget.value)}
             type="password"
             placeholder="password"
+            data-test-id="register-password"
             css={inputStyles}
           />
-          <input type="submit" value="Register" css={inputSubmitStyles} />
+          <input
+            type="submit"
+            value="Register"
+            data-test-id="register-button"
+            css={inputSubmitStyles}
+          />
           <div css={errorStyles}>
             {errors.map((error) => {
               return <div key={`error-${error.message}`}>{error.message}</div>;

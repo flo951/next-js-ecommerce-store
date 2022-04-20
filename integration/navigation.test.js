@@ -10,6 +10,8 @@ test('Add to cart, update amount, delete product from cart', async () => {
   expect(page.url()).toBe(`${baseUrl}/register`);
   await expect(page).toFill('[data-test-id="register-username"]', 'Flo');
   await expect(page).toFill('[data-test-id="register-password"]', '123');
+  await expect(page).toClick('[data-test-id="register-button"]');
+  await page.waitForNavigation();
   await expect(page).toMatch('Available Pokemon Cards');
   await expect(page).toClick('[data-test-id="product-1"]');
   await page.waitForNavigation();
