@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import { getSinglePokemon } from '../../util/database';
 import Cookies from 'js-cookie';
 import { GetServerSidePropsContext } from 'next';
-import Layout from '../../components/Layout';
 
 const centerCardStyles = css`
   display: flex;
@@ -100,18 +99,25 @@ export type Pokemon = {
 type Props = {
   pokemon: Pokemon;
   cart: Pokemon[];
+  setAmountInCart: (amount: number) => void;
 };
 
-export default function SingleProduct(props: Props) {
+export default function SingleProduct({
+  setAmountInCart,
+
+  cart,
+
+  pokemon,
+}: Props) {
   const [amount, setAmount] = useState(1);
-  const [amountInCart, setAmountInCart] = useState<number>();
+
   const [minAmount, setMinAmount] = useState('');
   const [addedToCart, setAddedToCart] = useState('');
 
   useEffect(() => {
     const getAmount = () => {
-      const pricePokemon = props.cart.map((pokemon) => {
-        return pokemon.amount;
+      const pricePokemon = cart.map((product) => {
+        return product.amount;
       });
 
       const sum = pricePokemon.reduce((partialSum, a) => partialSum + a, 0);
@@ -120,7 +126,7 @@ export default function SingleProduct(props: Props) {
     };
 
     getAmount();
-  }, [props.cart]);
+  }, [cart, setAmountInCart]);
 
   const handleIncrementAmount = () => {
     setAmount(amount + 1);
@@ -174,10 +180,10 @@ export default function SingleProduct(props: Props) {
       newCookie = [
         ...cookieValue,
         {
-          id: props.pokemon.id,
+          id: pokemon.id,
           amount: newAmount,
 
-          name: props.pokemon.name,
+          name: pokemon.name,
         },
       ];
 
@@ -190,8 +196,8 @@ export default function SingleProduct(props: Props) {
 
       Cookies.set('cart', JSON.stringify(cookieUpdated));
 
-      const pricePokemon = cookieUpdated.map((pokemon) => {
-        return pokemon.amount;
+      const pricePokemon = cookieUpdated.map((product) => {
+        return product.amount;
       });
 
       const sum = pricePokemon.reduce((partialSum, a) => partialSum + a, 0);
@@ -201,17 +207,17 @@ export default function SingleProduct(props: Props) {
       newCookie = [
         ...cookieValue,
         {
-          id: props.pokemon.id,
+          id: pokemon.id,
           amount: amount,
 
-          name: props.pokemon.name,
+          name: pokemon.name,
         },
       ];
 
       Cookies.set('cart', JSON.stringify(newCookie));
 
-      const pricePokemon = newCookie.map((pokemon) => {
-        return pokemon.amount;
+      const pricePokemon = newCookie.map((product) => {
+        return product.amount;
       });
 
       const sum = pricePokemon.reduce((partialSum, a) => partialSum + a, 0);
@@ -223,72 +229,71 @@ export default function SingleProduct(props: Props) {
   return (
     <>
       <Head>
-        <title>{props.pokemon.name}</title>
+        <title>{pokemon.name}</title>
 
         <meta
           name="description"
           content="Single product page, View single product by id"
         />
       </Head>
-      <Layout items={amountInCart}>
-        <div css={centerCardStyles}>
-          <h3>{addedToCart}</h3>
-          <div css={pokemonCardStyles}>
-            <h1>{props.pokemon.name}</h1>
+      {/* <Layout items={amountInCart}> */}
+      <div css={centerCardStyles}>
+        <h3>{addedToCart}</h3>
+        <div css={pokemonCardStyles}>
+          <h1>{pokemon.name}</h1>
 
-            <Image
-              css={imageStyles}
-              src={`/pokemon-images/${props.pokemon.id}.jpeg`}
-              alt={`Picture of ${props.pokemon.name}`}
-              data-test-id="product-image"
-              width="250"
-              height="250"
-            />
-            <div css={priceStyles}>
-              <h3 data-test-id="product-price"> {props.pokemon.price} </h3>
-              <span> €</span>
-            </div>
-            <div css={counterDivStyles}>
-              <p>{minAmount}</p>
-              <div>
-                <button
-                  css={counterButtonStyles}
-                  onClick={() => {
-                    handleDecrementAmount();
-                  }}
-                >
-                  -
-                </button>
-                <input
-                  value={amount}
-                  min="1"
-                  type="number"
-                  css={inputStyles}
-                  data-test-id="product-quantity"
-                  onChange={(e) => {
-                    setAmount(parseInt(e.currentTarget.value));
-                  }}
-                />
-                <button
-                  css={counterButtonStyles}
-                  onClick={() => {
-                    handleIncrementAmount();
-                  }}
-                >
-                  +
-                </button>{' '}
-              </div>
+          <Image
+            css={imageStyles}
+            src={`/pokemon-images/${pokemon.id}.jpeg`}
+            alt={`Picture of ${pokemon.name}`}
+            data-test-id="product-image"
+            width="250"
+            height="250"
+          />
+          <div css={priceStyles}>
+            <h3 data-test-id="product-price"> {pokemon.price} </h3>
+            <span> €</span>
+          </div>
+          <div css={counterDivStyles}>
+            <p>{minAmount}</p>
+            <div>
               <button
-                css={addButtonStyles}
-                data-test-id="product-add-to-cart"
-                onClick={() => handleAddToCookie(props.pokemon.id)}
+                css={counterButtonStyles}
+                onClick={() => {
+                  handleDecrementAmount();
+                }}
               >
-                Add to cart
+                -
               </button>
+              <input
+                value={amount}
+                min="1"
+                type="number"
+                css={inputStyles}
+                data-test-id="product-quantity"
+                onChange={(e) => {
+                  setAmount(parseInt(e.currentTarget.value));
+                }}
+              />
+              <button
+                css={counterButtonStyles}
+                onClick={() => {
+                  handleIncrementAmount();
+                }}
+              >
+                +
+              </button>{' '}
             </div>
+            <button
+              css={addButtonStyles}
+              data-test-id="product-add-to-cart"
+              onClick={() => handleAddToCookie(pokemon.id)}
+            >
+              Add to cart
+            </button>
           </div>
         </div>
-      </Layout>
+      </div>
     </>
   );
 }
