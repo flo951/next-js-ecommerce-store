@@ -46,7 +46,7 @@ const flexContainerStyles = css`
 `;
 
 type Props = {
-  items: number | undefined;
+  amountInCart: number;
   userObject?: User;
 };
 
@@ -84,7 +84,9 @@ export default function Header(props: Props) {
         </Link>
 
         <div css={circleStyles}>
-          <span data-test-id="cart-count">{JSON.stringify(props.items)}</span>
+          <span data-test-id="cart-count">
+            {JSON.stringify(props.amountInCart)}
+          </span>
         </div>
       </div>
     </header>
