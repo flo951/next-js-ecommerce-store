@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { css } from '@emotion/react';
+import { User } from '../util/database';
 
 const headerStyles = css`
   padding: 20px 20px;
@@ -46,20 +47,37 @@ const flexContainerStyles = css`
 
 type Props = {
   items: number | undefined;
+  userObject?: User;
 };
 
 export default function Header(props: Props) {
+  console.log(props);
   return (
     <header css={headerStyles}>
       <Link href="/">
         <a data-test-id="products-link">Products</a>
       </Link>
-      <Link href="/register">
-        <a data-test-id="products-link">Register</a>
-      </Link>
-      <Link href="/login">
-        <a data-test-id="products-link">Login</a>
-      </Link>
+
+      {props.userObject ? (
+        <div>
+          {' '}
+          <Link href="/logout">
+            <a data-test-id="products-link">Logout</a>
+          </Link>
+          <span> Hi {props.userObject.username} </span>{' '}
+        </div>
+      ) : (
+        <div>
+          {' '}
+          <Link href="/register">
+            <a data-test-id="products-link">Register</a>
+          </Link>
+          <Link href="/login">
+            <a data-test-id="products-link">Login</a>
+          </Link>{' '}
+        </div>
+      )}
+
       <div css={flexContainerStyles}>
         <Link href="/cart">
           <a data-test-id="cart-link">Cart</a>
