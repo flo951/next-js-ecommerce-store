@@ -4,10 +4,10 @@ import { css } from '@emotion/react';
 import { getPokemons } from '../util/database';
 import Link from 'next/link';
 import { GetServerSidePropsContext } from 'next';
-import { Pokemon } from './products/[pokemonId]';
-import Layout from '../components/Layout';
+
 import { useEffect, useState } from 'react';
 import SearchBar from '../components/SearchBar';
+import { Props } from './cart';
 
 const containerStyles = css`
   display: flex;
@@ -63,13 +63,7 @@ const imageStyles = css`
   border-radius: 8px;
 `;
 
-export type Props = {
-  pokemonsInDb: Pokemon[];
-  cart: Pokemon[];
-};
-
 export default function Home(props: Props) {
-  const [amountInCart, setAmountInCart] = useState<number>();
   const [pokemonList, setPokemonList] = useState(props.pokemonsInDb);
   // const [searchBar, setSearchBar] = useState('');
 
@@ -81,29 +75,11 @@ export default function Home(props: Props) {
 
       const sum = pricePokemon.reduce((partialSum, a) => partialSum + a, 0);
 
-      setAmountInCart(sum);
+      props.setAmountInCart(sum);
     };
 
     getAmount();
   }, [props]);
-
-  // const handleChangeSearchbar = (value: string) => {
-  //   const searchValue = value;
-  //   setSearchBar(searchValue);
-  //   setPokemonList(props.pokemonsInDb);
-  //   setMessageNotFound('');
-  // };
-
-  // useEffect(() => {
-  //   const newPokemonList = props.pokemonsInDb.filter((pokemon) => {
-  //     return pokemon.name.includes(searchBar);
-  //   });
-
-  //   newPokemonList.length !== 0 && setPokemonList(newPokemonList);
-  //   if (searchBar.length > 0 && newPokemonList.length === 0) {
-  //     setMessageNotFound('No matching Pokemon found');
-  //   }
-  // }, [searchBar, props.pokemonsInDb]);
 
   return (
     <>
@@ -114,49 +90,41 @@ export default function Home(props: Props) {
           content="Products Home Page, see which Pokemon cards you can buy"
         />
       </Head>
-      <Layout items={amountInCart}>
-        <div css={centerHeadingStyles}>
-          <h1>Available Pokemon Cards</h1>
-        </div>
-        <div css={searchBarStyles}>
-          {/* <input
-            css={inputSearchStyles}
-            value={searchBar}
-            placeholder="Search"
-            onChange={(e) => {
-              handleChangeSearchbar(e.currentTarget.value);
-            }}
-          /> */}
-          <SearchBar
-            pokemonsInDb={props.pokemonsInDb}
-            setPokemonList={setPokemonList}
-          />
-        </div>
-        <div css={containerStyles}>
-          {pokemonList.map((product) => {
-            return (
-              <Link
-                href={`/products/${product.id}`}
-                key={'pokemon-' + product.id}
-              >
-                <a data-test-id={`product-${product.id}`}>
-                  <div css={pokemonCardStyles}>
-                    <h2>{product.name}</h2>
 
-                    <Image
-                      css={imageStyles}
-                      src={`/pokemon-images/${product.id}.jpeg`}
-                      height="200%"
-                      width="200%"
-                      alt={`Image of Pokemon ${product.name}`}
-                    />
-                  </div>
-                </a>
-              </Link>
-            );
-          })}
-        </div>
-      </Layout>
+      <div css={centerHeadingStyles}>
+        <h1>Available Pokemon Cards</h1>
+      </div>
+      <div css={searchBarStyles}>
+        <SearchBar
+          pokemonsInDb={props.pokemonsInDb}
+          setPokemonList={setPokemonList}
+        />
+      </div>
+      <div css={containerStyles}>
+        {pokemonList.map((product) => {
+          return (
+            <Link
+              href={`/products/${product.id}`}
+              key={'pokemon-' + product.id}
+            >
+              <a data-test-id={`product-${product.id}`}>
+                <div css={pokemonCardStyles}>
+                  <h2>{product.name}</h2>
+
+                  <Image
+                    css={imageStyles}
+                    src={`/pokemon-images/${product.id}.jpeg`}
+                    height="200%"
+                    width="200%"
+                    alt={`Image of Pokemon ${product.name}`}
+                  />
+                </div>
+              </a>
+            </Link>
+          );
+        })}
+      </div>
+      {/* </Layout> */}
     </>
   );
 }
