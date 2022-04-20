@@ -5,6 +5,11 @@ const baseUrl = 'http://localhost:3000';
 // E2E: Add to cart, change quantity and remove from cart
 test('Add to cart, update amount, delete product from cart', async () => {
   await page.goto(`${baseUrl}/`);
+  await expect(page).toClick('[data-test-id="register-link"]');
+  await page.waitForNavigation();
+  expect(page.url()).toBe(`${baseUrl}/register`);
+  await expect(page).toFill('[data-test-id="register-username"]', 'Flo');
+  await expect(page).toFill('[data-test-id="register-password"]', '123');
   await expect(page).toMatch('Available Pokemon Cards');
   await expect(page).toClick('[data-test-id="product-1"]');
   await page.waitForNavigation();

@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { RegisterResponseBody } from './api/register';
 import { inputStyles } from './checkout';
@@ -15,7 +16,7 @@ export default function Register(props: Props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<Errors>([]);
-
+  const router = useRouter();
   return (
     <div>
       <Head>
@@ -49,6 +50,7 @@ export default function Register(props: Props) {
             props.refreshUserProfile();
             setUsername('');
             setPassword('');
+            await router.push('/');
           }}
           css={formStyles}
         >

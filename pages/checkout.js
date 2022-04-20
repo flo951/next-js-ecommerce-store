@@ -96,8 +96,6 @@ export default function Checkout(props) {
     Router.push('./thanks').catch((error) => console.log(error));
   };
 
-  console.log(props);
-
   return (
     <>
       <Head>

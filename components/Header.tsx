@@ -70,7 +70,7 @@ export default function Header(props: Props) {
         <div>
           {' '}
           <Link href="/register">
-            <a data-test-id="products-link">Register</a>
+            <a data-test-id="register-link">Register</a>
           </Link>
           <Link href="/login">
             <a data-test-id="products-link">Login</a>
